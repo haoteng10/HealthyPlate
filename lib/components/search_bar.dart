@@ -21,7 +21,7 @@ class _SearchBarState extends State<SearchBar> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(29),
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(
             offset: Offset(0, 10),
             blurRadius: 33,
@@ -44,7 +44,7 @@ class _SearchBarState extends State<SearchBar> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              onSubmitted: (String input) {
+              onChanged: (String input) {
                 // Either set the state or bring up search results on separate route
                 setState(() {
                   searchText = input;
