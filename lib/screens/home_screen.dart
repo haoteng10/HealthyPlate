@@ -20,10 +20,11 @@ class _HomeState extends State<Home> {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
-      print(barcodeScanRes);
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      print("Barcode Result: $barcodeScanRes");
     } catch (err) {
-      print(err);
+      // print(err);
       barcodeScanRes = "Failed to get platform version.";
     }
 
@@ -67,7 +68,9 @@ class _HomeState extends State<Home> {
                           ),
                           TextSpan(
                             text: "today?",
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
@@ -167,6 +170,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   SizedBox(height: 30),
+                  //Daily Goals
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -195,7 +199,37 @@ class _HomeState extends State<Home> {
                           title: "Eat Fruit",
                           timeLeft: "6min",
                         ),
-                        SizedBox(height: 20)
+                        SizedBox(height: 0)
+                      ],
+                    ),
+                  ),
+                  //DEBUG BUTTON
+                  SizedBox(height: 30),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.headline4,
+                            children: <InlineSpan>[
+                              TextSpan(text: "Debug "),
+                              TextSpan(
+                                text: "Page",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        OutlineButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/debug");
+                            },
+                            child: Text("Debug"))
                       ],
                     ),
                   ),

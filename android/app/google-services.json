@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "873879917046",
+    "firebase_url": "https://yes-healthy.firebaseio.com",
+    "project_id": "yes-healthy",
+    "storage_bucket": "yes-healthy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873879917046:android:37bde00e46da7218aa77d7",
+        "android_client_info": {
+          "package_name": "com.example.nutrition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "873879917046-hb346ivftd4439bldd966k6q6uh7re8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nutrition",
+            "certificate_hash": "62a3b01f0522f93846120202f0fe0d3b910e6731"
+          }
+        },
+        {
+          "client_id": "873879917046-fq9pjop656vbavf4drahl4jm1hf4mi43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFNu-DTWP-h80oGr2UOvyu6axbVcufvhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "873879917046-fq9pjop656vbavf4drahl4jm1hf4mi43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
