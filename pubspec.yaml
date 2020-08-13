@@ -26,6 +26,13 @@ dependencies:
   http: ^0.12.2
   flutter_spinkit: ^4.1.2
   flutter_barcode_scanner: ^1.0.1
+  firebase_core: ^0.4.5
+  cloud_firestore: ^0.13.7
+  firebase_auth: ^0.16.1
+  provider: ^4.3.2
+
+  # Analytics
+  firebase_analytics: 
 
 
   # The following adds the Cupertino Icons font to your application.

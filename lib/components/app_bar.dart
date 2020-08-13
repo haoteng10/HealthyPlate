@@ -17,7 +17,10 @@ AppBar appBar(BuildContext context, String title1, String title2) {
     ),
     title: RichText(
       text: TextSpan(
-        style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(fontWeight: FontWeight.bold),
         children: [
           TextSpan(
             text: "$title1 ",

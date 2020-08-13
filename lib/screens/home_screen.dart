@@ -8,6 +8,8 @@ import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
 import "package:nutrition/components/daily_goal_card.dart";
 import "package:nutrition/components/search_bar.dart";
+import "package:nutrition/screens/test_screen.dart";
+import 'package:nutrition/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -23,7 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = "Failed to get platform version.";
@@ -38,7 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Colors.green[50],
       bottomNavigationBar: BottomNavBar(),
@@ -67,7 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <InlineSpan>[
                           TextSpan(
                             text: "What are you \neating ",
-                            style: TextStyle(color: Color(Colors.white.value).withOpacity(.90)),
+                            style: TextStyle(
+                                color:
+                                    Color(Colors.white.value).withOpacity(.90)),
                           ),
                           TextSpan(
                             text: "today?",
@@ -174,6 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 30),
+                  //Daily Goals
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -202,7 +210,52 @@ class _HomeScreenState extends State<HomeScreen> {
                           title: "Eat Fruit",
                           timeLeft: "6min",
                         ),
-                        SizedBox(height: 20)
+                        SizedBox(height: 0)
+                      ],
+                    ),
+                  ),
+                  //DEBUG BUTTON
+                  SizedBox(height: 30),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.headline4,
+                            children: <InlineSpan>[
+                              TextSpan(text: "Debug "),
+                              TextSpan(
+                                text: "Only",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            OutlineButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Debug()));
+                                },
+                                child: Text("Debug")),
+                            SizedBox(width: 10.0),
+                            OutlineButton.icon(
+                              onPressed: () async {
+                                await _auth.signOut();
+                              },
+                              icon: Icon(Icons.person),
+                              label: Text("Sign Out"),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),

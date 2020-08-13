@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
 import "package:nutrition/constants.dart";
+import 'package:nutrition/services/auth.dart';
+import 'package:provider/provider.dart';
+import 'package:nutrition/models/user.dart';
 import "package:nutrition/screens/home_screen.dart";
 import "package:nutrition/components/rounded_button.dart";
 
@@ -10,17 +13,21 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Nutrition App",
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: Theme.of(context).textTheme.apply(
-              displayColor: kBlackColor,
-            ),
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: "Nutrition App",
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: Theme.of(context).textTheme.apply(
+                displayColor: kBlackColor,
+              ),
+        ),
+        home: WelcomeScreen(),
+        // home: Wrapper(),
       ),
-      home: WelcomeScreen(),
     );
   }
 }

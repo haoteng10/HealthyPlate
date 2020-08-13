@@ -4,6 +4,7 @@ import "package:http/http.dart" as http;
 import "package:nutrition/components/app_bar.dart";
 import "package:nutrition/components/bottom_nav_bar.dart";
 import 'package:nutrition/screens/register_screen.dart';
+import 'package:nutrition/services/auth.dart';
 import "../constants.dart";
 
 class LoginScreen extends StatefulWidget {
@@ -12,12 +13,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthService _auth = AuthService();
+
   String _username;
   String _password;
 
   void authenticate() async {
     print(_username);
     print(_password);
+
+    // Hao Teng - What is the purpose of this?
+
     // String url = "https://www.googleapis.com/books/v1/volumes?q={http}";
 
     // // Await the http get response, then decode the json-formatted response.

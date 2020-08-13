@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:nutrition/services/auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -6,6 +7,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
