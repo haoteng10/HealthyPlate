@@ -6,6 +6,8 @@ import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
 import "package:nutrition/components/daily_goal_card.dart";
 import "package:nutrition/components/search_bar.dart";
+import "package:nutrition/screens/test_screen.dart";
+import 'package:nutrition/services/auth.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -37,7 +39,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService _auth = AuthService();
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -216,7 +220,7 @@ class _HomeState extends State<Home> {
                             children: <InlineSpan>[
                               TextSpan(text: "Debug "),
                               TextSpan(
-                                text: "Page",
+                                text: "Only",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -225,11 +229,26 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         SizedBox(height: 10.0),
-                        OutlineButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, "/debug");
-                            },
-                            child: Text("Debug"))
+                        Row(
+                          children: [
+                            OutlineButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Debug()));
+                                },
+                                child: Text("Debug")),
+                            SizedBox(width: 10.0),
+                            OutlineButton.icon(
+                              onPressed: () async {
+                                await _auth.signOut();
+                              },
+                              icon: Icon(Icons.person),
+                              label: Text("Sign Out"),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),

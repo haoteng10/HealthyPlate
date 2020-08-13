@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/screens/login_screen.dart';
+import 'package:nutrition/components/login.dart';
 import "../constants.dart";
 
 AppBar appBar(BuildContext context) {
@@ -17,7 +17,10 @@ AppBar appBar(BuildContext context) {
     ),
     title: RichText(
       text: TextSpan(
-        style: Theme.of(context).textTheme.headline6.copyWith(fontWeight: FontWeight.bold),
+        style: Theme.of(context)
+            .textTheme
+            .headline6
+            .copyWith(fontWeight: FontWeight.bold),
         children: [
           TextSpan(
             text: "Nutritional ",
