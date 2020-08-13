@@ -29,7 +29,7 @@ class FoodListCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(29),
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     offset: Offset(0, 10),
                     blurRadius: 33,

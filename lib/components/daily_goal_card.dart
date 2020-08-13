@@ -1,11 +1,11 @@
 import "package:flutter/material.dart";
 import "../constants.dart";
 
-class NutritionLabel extends StatelessWidget {
+class DailyGoalCard extends StatelessWidget {
   final String title;
   final String timeLeft;
 
-  const NutritionLabel({Key key, this.title, this.timeLeft}) : super(key: key);
+  const DailyGoalCard({Key key, this.title, this.timeLeft}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class NutritionLabel extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(38.5),
-        boxShadow: [
+        boxShadow:<BoxShadow>[
           BoxShadow(
             offset: Offset(0, 10),
             blurRadius: 33,

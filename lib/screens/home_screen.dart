@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
 import "package:nutrition/components/barcode_scanner.dart";
+import "package:nutrition/components/bottom_nav_bar.dart";
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
@@ -9,13 +11,14 @@ import "package:nutrition/components/search_bar.dart";
 import "package:nutrition/screens/test_screen.dart";
 import 'package:nutrition/services/auth.dart';
 
-class Home extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   // Move this to barcode_scanner.dart file
+  // ignore: unused_field
   String _scanBarcode = "Unknown";
 
   Future<void> scanBarcodeNormal() async {
@@ -24,9 +27,8 @@ class _HomeState extends State<Home> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
-      print("Barcode Result: $barcodeScanRes");
-    } catch (err) {
-      // print(err);
+      print(barcodeScanRes);
+    } on PlatformException {
       barcodeScanRes = "Failed to get platform version.";
     }
 
@@ -43,6 +45,8 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.green[50],
+      bottomNavigationBar: BottomNavBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,13 +72,16 @@ class _HomeState extends State<Home> {
                         children: <InlineSpan>[
                           TextSpan(
                             text: "What are you \neating ",
-                            style: TextStyle(color: Colors.white70),
+                            style: TextStyle(
+                                color:
+                                    Color(Colors.white.value).withOpacity(.90)),
                           ),
                           TextSpan(
                             text: "today?",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           )
                         ],
                       ),
@@ -94,7 +101,7 @@ class _HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return Loading();
+                                  return LoadingScreen();
                                 },
                               ),
                             );
@@ -104,7 +111,7 @@ class _HomeState extends State<Home> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return Information();
+                                  return InformationScreen();
                                 },
                                 settings: RouteSettings(
                                   arguments: {
@@ -195,11 +202,11 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         SizedBox(height: 15),
-                        NutritionLabel(
+                        DailyGoalCard(
                           title: "Cook Spinach",
                           timeLeft: "8hrs 56min",
                         ),
-                        NutritionLabel(
+                        DailyGoalCard(
                           title: "Eat Fruit",
                           timeLeft: "6min",
                         ),

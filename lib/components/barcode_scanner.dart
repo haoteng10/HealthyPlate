@@ -15,7 +15,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(29),
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(
             offset: Offset(0, 10),
             blurRadius: 33,
@@ -29,7 +29,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
           Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 20, right: 20),
+                padding: EdgeInsets.only(left: 20, right: 15),
                 child: Icon(Icons.camera),
               ),
               Text(

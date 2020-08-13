@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/components/login.dart';
+import 'package:nutrition/screens/login_screen.dart';
 import "../constants.dart";
 
-AppBar appBar(BuildContext context) {
+AppBar appBar(BuildContext context, String title1, String title2) {
   return AppBar(
     backgroundColor: Colors.white,
     centerTitle: true,
@@ -23,11 +23,11 @@ AppBar appBar(BuildContext context) {
             .copyWith(fontWeight: FontWeight.bold),
         children: [
           TextSpan(
-            text: "Nutritional ",
+            text: "$title1 ",
             style: TextStyle(color: kPrimaryColor),
           ),
           TextSpan(
-            text: "Information",
+            text: title2,
             style: TextStyle(color: kSecondaryColor),
           ),
         ],
@@ -44,7 +44,7 @@ AppBar appBar(BuildContext context) {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return Login();
+                  return LoginScreen();
                 },
               ),
             );
