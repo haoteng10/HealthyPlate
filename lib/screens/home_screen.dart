@@ -3,13 +3,12 @@ import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
 import "package:nutrition/components/barcode_scanner.dart";
 import "package:nutrition/components/bottom_nav_bar.dart";
+import 'package:nutrition/components/debug_only.dart';
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
 import "package:nutrition/components/daily_goal_card.dart";
 import "package:nutrition/components/search_bar.dart";
-import "package:nutrition/screens/test_screen.dart";
-import 'package:nutrition/services/auth.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -41,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _auth = AuthService();
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -214,51 +212,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  //DEBUG BUTTON
                   SizedBox(height: 30),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.headline4,
-                            children: <InlineSpan>[
-                              TextSpan(text: "Debug "),
-                              TextSpan(
-                                text: "Only",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10.0),
-                        Row(
-                          children: [
-                            OutlineButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Debug()));
-                                },
-                                child: Text("Debug")),
-                            SizedBox(width: 10.0),
-                            OutlineButton.icon(
-                              onPressed: () async {
-                                await _auth.signOut();
-                              },
-                              icon: Icon(Icons.person),
-                              label: Text("Sign Out"),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                  DebugOnly()
                 ],
               ),
             ),

@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:flutter_spinkit/flutter_spinkit.dart";
+import 'package:nutrition/components/loading.dart';
 
 class LoadingScreen extends StatelessWidget {
   @override
@@ -7,10 +7,7 @@ class LoadingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.lightBlue[300],
       body: Center(
-        child: SpinKitDoubleBounce(
-          color: Colors.white,
-          size: 100,
-        ),
+        child: Loading(),
       ),
     );
   }
