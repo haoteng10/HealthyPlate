@@ -2,14 +2,13 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
 import "package:nutrition/components/barcode_scanner.dart";
-import "package:nutrition/components/bottom_nav_bar.dart";
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
 import "package:nutrition/components/daily_goal_card.dart";
 import "package:nutrition/components/search_bar.dart";
-import "package:nutrition/screens/test_screen.dart";
-import 'package:nutrition/services/auth.dart';
+import "package:nutrition/screens/debug_screen.dart";
+import "package:nutrition/services/auth.dart";
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -25,8 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = "Failed to get platform version.";
@@ -46,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: Colors.green[50],
-      bottomNavigationBar: BottomNavBar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,9 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <InlineSpan>[
                           TextSpan(
                             text: "What are you \neating ",
-                            style: TextStyle(
-                                color:
-                                    Color(Colors.white.value).withOpacity(.90)),
+                            style: TextStyle(color: Color(Colors.white.value).withOpacity(.90)),
                           ),
                           TextSpan(
                             text: "today?",
@@ -88,66 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SizedBox(height: 20),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: <Widget>[
-                        FoodListCard(
-                          image: "assets/images/lemon.jpg",
-                          title: "Lemons",
-                          subtitle: "Short desc",
-                          pressCalories: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return LoadingScreen();
-                                },
-                              ),
-                            );
-                          },
-                          pressInfo: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return InformationScreen();
-                                },
-                                settings: RouteSettings(
-                                  arguments: {
-                                    // Prefix this with the food name
-                                    "image": "assets/images/lemon.jpg",
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        FoodListCard(
-                          image: "assets/images/strawberry.jpg",
-                          title: "Strawberries",
-                          subtitle: "A fact here!",
-                          pressCalories: () {},
-                          pressInfo: () {},
-                        ),
-                        FoodListCard(
-                          image: "assets/images/tomato.jpg",
-                          title: "Tomatoes",
-                          subtitle: "For pizza lovers!",
-                          pressCalories: () {},
-                          pressInfo: () {},
-                        ),
-                        FoodListCard(
-                          image: "assets/images/broccoli.jpg",
-                          title: "Broccoli",
-                          subtitle: "The classic greens.",
-                          pressCalories: () {},
-                          pressInfo: () {},
-                        ),
-                        SizedBox(width: 30)
-                      ],
-                    ),
-                  ),
+                  buildFoodList(context),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -172,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 15),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: GestureDetector(
@@ -182,40 +118,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: 30),
                   //Daily Goals
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            style: Theme.of(context).textTheme.headline4,
-                            children: <InlineSpan>[
-                              TextSpan(text: "Daily "),
-                              TextSpan(
-                                text: "Goals",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        DailyGoalCard(
-                          title: "Cook Spinach",
-                          timeLeft: "8hrs 56min",
-                        ),
-                        DailyGoalCard(
-                          title: "Eat Fruit",
-                          timeLeft: "6min",
-                        ),
-                        SizedBox(height: 0)
-                      ],
-                    ),
-                  ),
+                  buildGoalList(context),
                   //DEBUG BUTTON
-                  SizedBox(height: 30),
+                  SizedBox(height: 15),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Column(
@@ -239,13 +144,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         Row(
                           children: [
                             OutlineButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Debug()));
-                                },
-                                child: Text("Debug")),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Debug(),
+                                  ),
+                                );
+                              },
+                              child: Text("Debug"),
+                            ),
                             SizedBox(width: 10.0),
                             OutlineButton.icon(
                               onPressed: () async {
@@ -264,6 +172,104 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  SingleChildScrollView buildFoodList(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: <Widget>[
+          FoodListCard(
+            image: "assets/images/lemon.jpg",
+            title: "Lemons",
+            subtitle: "Short desc",
+            pressCalories: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return LoadingScreen();
+                  },
+                ),
+              );
+            },
+            pressInfo: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return InformationScreen();
+                  },
+                  settings: RouteSettings(
+                    arguments: {
+                      // Prefix this with the food name
+                      "image": "assets/images/lemon.jpg",
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
+          FoodListCard(
+            image: "assets/images/strawberry.jpg",
+            title: "Strawberries",
+            subtitle: "A fact here!",
+            pressCalories: () {},
+            pressInfo: () {},
+          ),
+          FoodListCard(
+            image: "assets/images/tomato.jpg",
+            title: "Tomatoes",
+            subtitle: "For pizza lovers!",
+            pressCalories: () {},
+            pressInfo: () {},
+          ),
+          FoodListCard(
+            image: "assets/images/broccoli.jpg",
+            title: "Broccoli",
+            subtitle: "The classic greens.",
+            pressCalories: () {},
+            pressInfo: () {},
+          ),
+          SizedBox(width: 30)
+        ],
+      ),
+    );
+  }
+
+  Padding buildGoalList(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.headline4,
+              children: <InlineSpan>[
+                TextSpan(text: "Daily "),
+                TextSpan(
+                  text: "Goals",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
+            ),
+          ),
+          SizedBox(height: 15),
+          DailyGoalCard(
+            title: "Cook Spinach",
+            timeLeft: "8hrs 56min",
+          ),
+          DailyGoalCard(
+            title: "Eat Fruit",
+            timeLeft: "6min",
+          ),
+          SizedBox(height: 0)
+        ],
       ),
     );
   }
