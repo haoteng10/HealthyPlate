@@ -1,17 +1,17 @@
 import "package:flutter/material.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
-class Debug extends StatefulWidget {
+class FirestoreDebug extends StatefulWidget {
   @override
-  _DebugState createState() => _DebugState();
+  _FirestoreDebugState createState() => _FirestoreDebugState();
 }
 
-class _DebugState extends State<Debug> {
+class _FirestoreDebugState extends State<FirestoreDebug> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Debug Page"),
+        title: Text("Firestore Page"),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(

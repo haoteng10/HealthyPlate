@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/screens/login_screen.dart';
 import "package:nutrition/services/auth.dart";
 
-import '../constants.dart';
+import "../constants.dart";
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -11,9 +10,11 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final AuthService _auth = AuthService();
+
+  Future<void> authenticate() async {}
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -70,20 +71,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: buildActionButton(context, "Login", Colors.indigo, () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return LoginScreen();
-                              },
-                            ),
-                          );
+                        child: buildActionButton(
+                            context, "Register", Colors.purple, () {
+                          authenticate();
                         }),
-                      ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: buildActionButton(context, "Register", Colors.purple, () {}),
                       )
                     ],
                   ),
@@ -96,7 +87,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  GestureDetector buildActionButton(BuildContext context, String name, Color color, Function action) {
+  GestureDetector buildActionButton(
+      BuildContext context, String name, Color color, Function action) {
     return GestureDetector(
       child: Container(
         height: 60,
