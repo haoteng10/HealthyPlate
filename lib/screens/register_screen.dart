@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/services/auth.dart";
 
 import "../constants.dart";
@@ -11,80 +12,107 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final AuthService _auth = AuthService();
 
-  Future<void> authenticate() async {}
+  String _email;
+  String _password;
+  bool _loading = false;
+  String _errorMessage = "";
+
+  Future<void> authenticate() async {
+    print("Email: $_email");
+    print("Password: $_password");
+
+    //Changing state so it is showing the loading widget
+    setState(() {
+      _loading = true;
+    });
+
+    dynamic result =
+        await _auth.registerWithEmailAndPassword(_email, _password);
+    if (result == null) {
+      setState(() {
+        _errorMessage = "Please enter a valid email!";
+      });
+    }
+
+    setState(() {
+      _loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        width: double.infinity,
-        // height: size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/register_bg.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25),
+    return _loading
+        ? LoadingScreen()
+        : Scaffold(
+            resizeToAvoidBottomInset: false,
+            body: Container(
+              width: double.infinity,
+              // height: size.height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/register_bg.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    "Register",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "Register",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Spacer(),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: buildEmailField(),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: buildPasswordField(),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: buildActionButton(
+                                  context, "Register", Colors.purple, () async {
+                                await authenticate();
+                              }),
+                            )
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                  // Spacer(),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: buildEmailField(),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: buildPasswordField(),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: buildActionButton(
-                            context, "Register", Colors.purple, () {
-                          authenticate();
-                        }),
-                      )
-                    ],
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   GestureDetector buildActionButton(
@@ -154,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               obscureText: true,
               onChanged: (String input) {
                 setState(() {
-                  // _password = input;
+                  _password = input;
                 });
               },
             ),
@@ -202,7 +230,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               onChanged: (String input) {
                 setState(() {
-                  // _password = input;
+                  _email = input;
                 });
               },
             ),
