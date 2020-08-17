@@ -1,9 +1,10 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:nutrition/constants.dart";
-import 'package:nutrition/services/auth.dart';
-import 'package:provider/provider.dart';
-import 'package:nutrition/models/user.dart';
-import "package:nutrition/screens/home_screen.dart";
+import 'package:nutrition/screens/navigation_screen.dart';
+import "package:nutrition/services/auth.dart";
+import "package:provider/provider.dart";
+import "package:nutrition/models/user.dart";
 import "package:nutrition/components/rounded_button.dart";
 
 void main() {
@@ -13,12 +14,18 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Nutrition App",
         theme: ThemeData(
+          primarySwatch: Colors.amber,
           scaffoldBackgroundColor: Colors.white,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           textTheme: Theme.of(context).textTheme.apply(
@@ -72,11 +79,11 @@ class WelcomeScreen extends StatelessWidget {
                 text: "Start tracking",
                 fontSize: 20,
                 press: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return HomeScreen();
+                        return NavigationScreen();
                       },
                     ),
                   );

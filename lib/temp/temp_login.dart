@@ -11,29 +11,29 @@ class _TempLoginState extends State<TempLogin> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
-  bool loading = false;
+  bool _loading = false;
 
   //Text Field State
   String _email = "";
   String _password = "";
 
   //Error message
-  String errorMessage = "";
+  String _errorMessage = "";
 
-  void authenticate() async {
+  Future<void> authenticate() async {
     print("Email: $_email");
     print("Password: $_password");
 
     //Changing state so it is showing the loading widget
     setState(() {
-      loading = true;
+      _loading = true;
     });
 
     dynamic result = await _auth.loginWithEmailAndPassword(_email, _password);
     if (result == null) {
       setState(() {
-        loading = false;
-        errorMessage = "Please enter a valid email!";
+        _loading = false;
+        _errorMessage = "Please enter a valid email!";
       });
     } else {
       Navigator.pop(context);
@@ -42,7 +42,7 @@ class _TempLoginState extends State<TempLogin> {
 
   @override
   Widget build(BuildContext context) {
-    return loading
+    return _loading
         ? LoadingScreen()
         : Scaffold(
             appBar: AppBar(
@@ -58,19 +58,19 @@ class _TempLoginState extends State<TempLogin> {
                     children: <Widget>[
                       SizedBox(height: 20.0),
                       TextFormField(
-                        validator: (val) =>
+                        validator: (String val) =>
                             val.isEmpty ? "Enter an email" : null,
-                        onChanged: (val) {
+                        onChanged: (String val) {
                           setState(() => _email = val);
                         },
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
                         obscureText: true,
-                        validator: (val) => val.length < 5
+                        validator: (String val) => val.length < 5
                             ? "Enter a password with length > 5"
                             : null,
-                        onChanged: (val) {
+                        onChanged: (String val) {
                           setState(() => _password = val);
                         },
                       ),
@@ -83,14 +83,14 @@ class _TempLoginState extends State<TempLogin> {
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                authenticate();
+                                await authenticate();
                               }
                             },
                           ),
                         ],
                       ),
                       Text(
-                        errorMessage,
+                        _errorMessage,
                         style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.red,

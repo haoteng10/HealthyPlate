@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
-import "package:nutrition/components/app_bar.dart";
-import "package:nutrition/components/bottom_nav_bar.dart";
+// import 'package:nutrition/deprecated/bottom_nav_bar.dart';
 import "../constants.dart";
 
 class InformationScreen extends StatefulWidget {
@@ -11,12 +10,12 @@ class InformationScreen extends StatefulWidget {
 class _InformationScreenState extends State<InformationScreen> {
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> arguments = ModalRoute.of(context).settings.arguments;
+    final Map<String, String> arguments =
+        ModalRoute.of(context).settings.arguments;
     final String image = arguments["image"];
 
     return Scaffold(
       // appBar: appBar(context, "Nutritional", "Information"),
-      bottomNavigationBar: BottomNavBar(),
       body: Column(
         children: <Widget>[
           SizedBox(

@@ -17,7 +17,7 @@ class AuthService {
   }
 
   //Sign In Anonymously
-  Future signInAnon() async {
+  Future<dynamic> signInAnon() async {
     try {
       AuthResult result = await _auth.signInAnonymously();
       FirebaseUser user = result.user;
@@ -29,7 +29,8 @@ class AuthService {
   }
 
   //Login Via Email & Password
-  Future loginWithEmailAndPassword(String email, String password) async {
+  Future<dynamic> loginWithEmailAndPassword(
+      String email, String password) async {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
@@ -43,7 +44,8 @@ class AuthService {
   }
 
   //Register with Email & Password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future<dynamic> registerWithEmailAndPassword(
+      String email, String password) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -57,7 +59,7 @@ class AuthService {
   }
 
   //Sign Out
-  Future signOut() async {
+  Future<dynamic> signOut() async {
     try {
       return await _auth.signOut();
     } catch (err) {

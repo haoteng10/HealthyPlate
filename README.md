@@ -1,4 +1,4 @@
-# YesHealthy
+# NutritionApp
 
 App to track your diet and what you should eat to lead a healthier life.
 
@@ -9,5 +9,5 @@ App to track your diet and what you should eat to lead a healthier life.
 
 ## Installation
 ```bash
-$
+$ flutter doctor
 ```
