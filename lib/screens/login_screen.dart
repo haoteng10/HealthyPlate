@@ -26,12 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (result == null) {
       setState(() {
         _errorMessage = "Error occurs!";
+        _loading = false;
       });
     }
-
-    setState(() {
-      _loading = false;
-    });
   }
 
   Future<void> authenticate() async {

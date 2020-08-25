@@ -1,5 +1,10 @@
 import "package:flutter/material.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:nutrition/models/food.dart';
+import 'package:nutrition/screens/loading_screen.dart';
+import 'package:nutrition/services/database.dart';
+import 'package:nutrition/models/user.dart';
+import 'package:provider/provider.dart';
 
 class FirestoreDebug extends StatefulWidget {
   @override
@@ -9,38 +14,40 @@ class FirestoreDebug extends StatefulWidget {
 class _FirestoreDebugState extends State<FirestoreDebug> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Firestore Page"),
         centerTitle: true,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection("foods").snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text("Error: ${snapshot.error}");
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text("Loading...");
-            default:
-              return new ListView(
-                children:
-                    snapshot.data.documents.map((DocumentSnapshot document) {
-                  return new Card(
-                    child: ListTile(
-                      title: Text("Name: ${document["name"]}"),
-                      subtitle: Text("Calories: ${document["calories"]}"),
-                    ),
-                  );
-                }).toList(),
-              );
+      body: StreamBuilder<List<Food>>(
+        stream: DatabaseService().foods,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Food> foods = snapshot.data;
+            return ListView(
+              children: foods.map((Food food) {
+                return Card(
+                  child: ListTile(
+                    title: Text("Name: ${food.name}"),
+                    subtitle: Text("Calories: ${food.calories}"),
+                  ),
+                );
+              }).toList(),
+            );
+          } else {
+            return LoadingScreen();
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Firestore.instance
-              .collection("foods")
-              .add({"name": "pear", "calories": 20});
+          Firestore.instance.collection("foods").add({
+            "name": "pear",
+            "calories": 20,
+            "user": Firestore.instance.document("users/" + user.uid),
+          });
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.pink,

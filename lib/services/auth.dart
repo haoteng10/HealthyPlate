@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nutrition/models/user.dart';
+import 'package:nutrition/services/database.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -21,6 +22,9 @@ class AuthService {
     try {
       AuthResult result = await _auth.signInAnonymously();
       FirebaseUser user = result.user;
+      // Create a user document in users collection
+      await DatabaseService(uid: user.uid).createUser("null");
+      // Return the user according to the user model
       return _userFromFirebaseUser(user);
     } catch (err) {
       print(err.toString());
@@ -50,6 +54,9 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+
+      await DatabaseService(uid: user.uid).createUser("null");
+
       return _userFromFirebaseUser(user);
     } catch (err) {
       print("Register with email & password failed!");

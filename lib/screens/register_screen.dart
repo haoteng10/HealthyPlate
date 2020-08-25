@@ -31,12 +31,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (result == null) {
       setState(() {
         _errorMessage = "Please enter a valid email!";
+        _loading = false;
       });
     }
-
-    setState(() {
-      _loading = false;
-    });
   }
 
   @override

@@ -18,6 +18,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   bool _isLoggedIn = false;
 
   int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
