@@ -22,18 +22,23 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
         centerTitle: true,
       ),
       body: StreamBuilder<List<Food>>(
-        stream: DatabaseService().foods,
+        stream: DatabaseService(uid: user.uid).foods,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Food> foods = snapshot.data;
             return ListView(
-              children: foods.map((Food food) {
-                return Card(
-                  child: ListTile(
-                    title: Text("Name: ${food.name}"),
-                    subtitle: Text("Calories: ${food.calories}"),
-                  ),
-                );
+              children: foods.map((dynamic food) {
+                // If the snapshot array is NOT null, return the card. If it is null, then return an empty container.
+                if (food != null) {
+                  return Card(
+                    child: ListTile(
+                      title: Text("Name: ${food.name}"),
+                      subtitle: Text("Calories: ${food.calories}"),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
               }).toList(),
             );
           } else {
