@@ -1,6 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:oauth2/oauth2.dart';
+import "package:http/http.dart" as http;
 import "package:nutrition/components/barcode_scanner.dart";
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
@@ -18,6 +21,28 @@ class _HomeScreenState extends State<HomeScreen> {
   // Move this to barcode_scanner.dart file
   // ignore: unused_field
   String _scanBarcode = "Unknown";
+  Client _oauthClient;
+  // DateTime _oauthExpDate;
+
+  Future<void> fetchToken() async {
+    final String _fatSecretClientID = DotEnv().env["FATSECRET_CLIENT_ID"];
+    final String _fatSecretClientSecret =
+        DotEnv().env["FATSECRET_CLIENT_SECRET"];
+
+    final _authorizationEndpoint =
+        Uri.parse("https://oauth.fatsecret.com/connect/token");
+    Client client = await clientCredentialsGrant(
+        _authorizationEndpoint, _fatSecretClientID, _fatSecretClientSecret);
+
+    setState(() {
+      _oauthClient = client;
+      // _oauthExpDate = client.credentials.expiration;
+    });
+
+    http.Response response = await _oauthClient.post(
+        "https://platform.fatsecret.com/rest/server.api?method=food.find_id_for_barcode&barcode=075720000814&format=json");
+    print(response.body);
+  }
 
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
@@ -25,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
-      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = "Failed to get platform version.";
     }
@@ -35,6 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _scanBarcode = barcodeScanRes;
     });
+
+    //Run the fetchAPI function
   }
 
   @override
@@ -124,6 +150,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   //Debug Section
                   Debug(),
                   SizedBox(height: 30),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      children: [
+                        RaisedButton(
+                            child: Text("Fetch Token"),
+                            onPressed: () async {
+                              await fetchToken();
+                            }),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

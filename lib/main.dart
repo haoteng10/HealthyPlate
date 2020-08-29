@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import "package:nutrition/constants.dart";
 import 'package:nutrition/screens/navigation_screen.dart';
 import "package:nutrition/services/auth.dart";
@@ -7,7 +8,8 @@ import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
 import "package:nutrition/components/rounded_button.dart";
 
-void main() {
+void main() async {
+  await DotEnv().load(".env");
   runApp(MyApp());
 }
 
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-  
+
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(

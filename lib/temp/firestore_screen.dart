@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:nutrition/models/food.dart';
 import 'package:nutrition/screens/loading_screen.dart';
 import 'package:nutrition/services/database.dart';
@@ -48,15 +47,93 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Firestore.instance.collection("foods").add({
-            "name": "pear",
-            "calories": 20,
-            "user": Firestore.instance.document("users/" + user.uid),
-          });
+          showModalBottomSheet(
+              context: context, builder: (context) => AddItemBottomSheet());
+          // DatabaseService(uid: user.uid).addFood("apple", 50);
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.pink,
       ),
+    );
+  }
+}
+
+class AddItemBottomSheet extends StatefulWidget {
+  @override
+  _AddItemBottomSheetState createState() => _AddItemBottomSheetState();
+}
+
+class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
+  final _formKey = GlobalKey<FormState>();
+
+  // Items
+  String _name;
+  int _calories;
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+      child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Name",
+                ),
+                onChanged: (String value) {
+                  setState(() {
+                    _name = value;
+                  });
+                },
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return "Please enter some text.";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Calories",
+                ),
+                onChanged: (String value) {
+                  setState(() {
+                    _calories = int.parse(value);
+                  });
+                },
+                validator: (String value) {
+                  int noVal;
+                  try {
+                    noVal = int.parse(value);
+                  } catch (err) {
+                    return "Invalid Input: Please enter a positive integer.";
+                  }
+                  if (noVal < 0) {
+                    return "Invalid Input: Please enter a positive integer.";
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20),
+              RaisedButton.icon(
+                  onPressed: () {
+                    if (_formKey.currentState.validate()) {
+                      //Add to database
+                      DatabaseService(uid: user.uid).addFood(_name, _calories);
+                      //Exit the bottom sheet
+                      Navigator.pop(context);
+                    }
+                  },
+                  icon: Icon(Icons.add_to_queue),
+                  label: Text("Add")),
+            ],
+          )),
     );
   }
 }

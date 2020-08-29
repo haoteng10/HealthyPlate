@@ -13,12 +13,22 @@ class DatabaseService {
 
   Future<void> createUser(String name) async {
     await usersCollection.document(uid).setData({
-      "uid": uid,
+      "uid": uid, //Will be removed in the future
       "name": name,
+      "foods": [],
     });
   }
 
-  Future<List<Food>> _foodListFromSnapshot(QuerySnapshot snapshot) async {
+  Future<void> addFood(String name, int calories) async {
+    await foodsCollection.add({
+      "name": name,
+      "calories": calories,
+      "user": Firestore.instance.document("users/" + uid),
+    });
+  }
+
+  Future<List<Food>> _foodListFromFoodCollectionSnapshot(
+      QuerySnapshot snapshot) async {
     dynamic futures = snapshot.documents.map((doc) async {
       //Get the user information from the food's user reference
       DocumentSnapshot userData = await doc.data["user"].get();
@@ -39,6 +49,8 @@ class DatabaseService {
 
   //Get Foods stream
   Stream<List<Food>> get foods {
-    return foodsCollection.snapshots().asyncMap(_foodListFromSnapshot);
+    return foodsCollection
+        .snapshots()
+        .asyncMap(_foodListFromFoodCollectionSnapshot);
   }
 }
