@@ -20,19 +20,19 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
         title: Text("Firestore Page"),
         centerTitle: true,
       ),
-      body: StreamBuilder<List<Food>>(
-        stream: DatabaseService(uid: user.uid).foods,
+      body: StreamBuilder<List<FoodData>>(
+        stream: DatabaseService(uid: user.uid).foodData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Food> foods = snapshot.data;
+            List<FoodData> foods = snapshot.data;
             return ListView(
-              children: foods.map((dynamic food) {
+              children: foods.map((FoodData food) {
                 // If the snapshot array is NOT null, return the card. If it is null, then return an empty container.
                 if (food != null) {
                   return Card(
                     child: ListTile(
-                      title: Text("Name: ${food.name}"),
-                      subtitle: Text("Calories: ${food.calories}"),
+                      title: Text("Name: ${food.brandName + food.foodName}"),
+                      subtitle: Text("URL: ${food.foodUrl}"),
                     ),
                   );
                 } else {
@@ -45,15 +45,15 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-              context: context, builder: (context) => AddItemBottomSheet());
-          // DatabaseService(uid: user.uid).addFood("apple", 50);
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.pink,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     showModalBottomSheet(
+      //         context: context, builder: (context) => AddItemBottomSheet());
+      //     // DatabaseService(uid: user.uid).addFood("apple", 50);
+      //   },
+      //   child: Icon(Icons.add),
+      //   backgroundColor: Colors.pink,
+      // ),
     );
   }
 }
@@ -125,7 +125,7 @@ class _AddItemBottomSheetState extends State<AddItemBottomSheet> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       //Add to database
-                      DatabaseService(uid: user.uid).addFood(_name, _calories);
+                      // DatabaseService(uid: user.uid).addFood(_name, _calories);
                       //Exit the bottom sheet
                       Navigator.pop(context);
                     }

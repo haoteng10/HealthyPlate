@@ -1,5 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:nutrition/models/food.dart";
+import 'package:nutrition/services/fatsecret.dart';
 
 class DatabaseService {
   final String uid;
@@ -19,12 +20,32 @@ class DatabaseService {
     });
   }
 
-  Future<void> addFood(String name, int calories) async {
-    await foodsCollection.add({
-      "name": name,
-      "calories": calories,
+  Future<void> addFood(String foodID) async {
+    DocumentReference addedFoodDocument = await foodsCollection.add({
+      "food_id": foodID,
       "user": Firestore.instance.document("users/" + uid),
     });
+
+    await usersCollection.document(uid).updateData({
+      "foods": FieldValue.arrayUnion([addedFoodDocument]),
+    });
+  }
+
+  Future<List<FoodData>> _foodDataListFromFoodCollectionSnapshot(
+      QuerySnapshot snapshot) async {
+    dynamic futures = snapshot.documents.map((doc) async {
+      //Get the user information from the food's user reference
+      DocumentSnapshot userData = await doc.data["user"].get();
+      //If the user's uid in the food document is equal to the user's uid of the application
+      //Return the food document to the StreamBuilder in an array of items
+      //Returns null if the condition is not meet
+      //Therefore, the returned array can be something like this: [null, null, "instance of Food"]
+      if (userData.data["uid"] == uid) {
+        return await FatSecretService()
+            .getFoodNutrition(int.parse(doc["food_id"]));
+      }
+    });
+    return await Future.wait(futures);
   }
 
   Future<List<Food>> _foodListFromFoodCollectionSnapshot(
@@ -38,8 +59,7 @@ class DatabaseService {
       //Therefore, the returned array can be something like this: [null, null, "instance of Food"]
       if (userData.data["uid"] == uid) {
         return Food(
-          name: doc.data["name"],
-          calories: doc.data["calories"],
+          foodID: doc.data["food_id"],
           user: doc.data["user"],
         );
       }
@@ -47,10 +67,17 @@ class DatabaseService {
     return await Future.wait(futures);
   }
 
-  //Get Foods stream
+  // Get Foods stream
   Stream<List<Food>> get foods {
     return foodsCollection
         .snapshots()
         .asyncMap(_foodListFromFoodCollectionSnapshot);
+  }
+
+  //Get FoodData stream
+  Stream<List<FoodData>> get foodData {
+    return foodsCollection
+        .snapshots()
+        .asyncMap(_foodDataListFromFoodCollectionSnapshot);
   }
 }

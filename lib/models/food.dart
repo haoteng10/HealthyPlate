@@ -1,9 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:nutrition/models/api/serving.dart';
 
 class Food {
-  final String name;
-  final int calories;
+  final String foodID;
   final DocumentReference user;
 
-  Food({this.name, this.calories, this.user});
+  Food({
+    this.foodID,
+    this.user,
+  });
+}
+
+class FoodData {
+  final String brandName;
+  final String foodName;
+  final String foodUrl;
+  final Serving serving;
+
+  final DocumentReference user;
+
+  FoodData({
+    this.brandName,
+    this.foodName,
+    this.foodUrl,
+    this.serving,
+    this.user,
+  });
 }
