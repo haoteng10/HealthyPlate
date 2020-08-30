@@ -1,17 +1,17 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
-import 'package:nutrition/services/database.dart';
-import 'package:nutrition/services/fatsecret.dart';
-import 'package:provider/provider.dart';
-import 'package:nutrition/models/user.dart';
+import "package:nutrition/services/database.dart";
+import "package:nutrition/services/fatsecret.dart";
+import "package:provider/provider.dart";
+import "package:nutrition/models/user.dart";
 import "package:nutrition/components/barcode_scanner.dart";
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
 import "package:nutrition/components/daily_goal_card.dart";
 import "package:nutrition/components/search_bar.dart";
-import 'package:nutrition/temp/debug_section.dart';
+import "package:nutrition/temp/debug_section.dart";
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -19,34 +19,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FatSecretService _fatSecretService;
   // Move this to barcode_scanner.dart file
-  // ignore: unused_field
-  int _scanBarcode;
 
   Future<int> scanBarcodeNormal() async {
-    int barcodeScanRes;
-    String err = "";
+    String _barcodeScanRes;
+    String _err = "";
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = int.parse(await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.BARCODE));
+      _barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
     } on PlatformException {
-      err = "Failed to get platform version.";
+      _err = "Failed to get platform version.";
     }
 
     if (!mounted) return null;
 
-    setState(() {
-      _scanBarcode = barcodeScanRes; //Is this necessary?
-    });
-
-    return barcodeScanRes;
+    return int.parse(_barcodeScanRes);
   }
 
   Future<void> barcodeInput(String userUid) async {
     int barcode = await scanBarcodeNormal();
-    int itemID = await FatSecretService().findIDForBarcode(barcode);
+    int itemID = await _fatSecretService.findIDForBarcode(barcode);
     if (itemID > 0) {
       DatabaseService(uid: userUid).addFood(itemID.toString());
     }
@@ -55,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    FatSecretService().checkAndRefreshToken();
+    _fatSecretService = FatSecretService();
   }
 
   @override
@@ -146,18 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   //Debug Section
                   Debug(),
                   SizedBox(height: 30),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 24),
-                  //   child: Row(
-                  //     children: [
-                  //       RaisedButton(
-                  //           child: Text("Fetch Item Info"),
-                  //           onPressed: () async {
-                  //             print(await findIDForBarcode(8));
-                  //           }),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
             ),

@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/temp/firestore_screen.dart';
+import "package:nutrition/temp/firestore_screen.dart";
 import "package:nutrition/services/auth.dart";
 import "package:nutrition/temp/temp_login.dart";
-import 'package:nutrition/temp/temp_register.dart';
+import "package:nutrition/temp/temp_register.dart";
 import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
 

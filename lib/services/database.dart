@@ -1,6 +1,6 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:nutrition/models/food.dart";
-import 'package:nutrition/services/fatsecret.dart';
+import "package:nutrition/services/fatsecret.dart";
 
 class DatabaseService {
   final String uid;
@@ -34,9 +34,9 @@ class DatabaseService {
   Future<List<FoodData>> _foodDataListFromFoodCollectionSnapshot(
       QuerySnapshot snapshot) async {
     dynamic futures = snapshot.documents.map((doc) async {
-      //Get the user information from the food's user reference
+      //Get the user information from the food"s user reference
       DocumentSnapshot userData = await doc.data["user"].get();
-      //If the user's uid in the food document is equal to the user's uid of the application
+      //If the user"s uid in the food document is equal to the user"s uid of the application
       //Return the food document to the StreamBuilder in an array of items
       //Returns null if the condition is not meet
       //Therefore, the returned array can be something like this: [null, null, "instance of Food"]
@@ -51,9 +51,9 @@ class DatabaseService {
   Future<List<Food>> _foodListFromFoodCollectionSnapshot(
       QuerySnapshot snapshot) async {
     dynamic futures = snapshot.documents.map((doc) async {
-      //Get the user information from the food's user reference
+      //Get the user information from the food"s user reference
       DocumentSnapshot userData = await doc.data["user"].get();
-      //If the user's uid in the food document is equal to the user's uid of the application
+      //If the user"s uid in the food document is equal to the user"s uid of the application
       //Return the food document to the StreamBuilder in an array of items
       //Returns null if the condition is not meet
       //Therefore, the returned array can be something like this: [null, null, "instance of Food"]

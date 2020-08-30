@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/models/food.dart';
-import 'package:nutrition/screens/loading_screen.dart';
-import 'package:nutrition/services/database.dart';
-import 'package:nutrition/models/user.dart';
-import 'package:provider/provider.dart';
+import "package:nutrition/models/food.dart";
+import "package:nutrition/screens/loading_screen.dart";
+import "package:nutrition/services/database.dart";
+import "package:nutrition/models/user.dart";
+import "package:provider/provider.dart";
 
 class FirestoreDebug extends StatefulWidget {
   @override
@@ -31,7 +31,8 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
                 if (food != null) {
                   return Card(
                     child: ListTile(
-                      title: Text("Name: ${food.brandName + food.foodName}"),
+                      title:
+                          Text("Name: ${food.brandName + " " + food.foodName}"),
                       subtitle: Text("URL: ${food.foodUrl}"),
                     ),
                   );

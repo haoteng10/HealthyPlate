@@ -1,9 +1,9 @@
-import 'package:oauth2/oauth2.dart';
-import 'package:http/http.dart' as http;
+import "package:oauth2/oauth2.dart";
+import "package:http/http.dart" as http;
 import "package:flutter_dotenv/flutter_dotenv.dart";
 import "dart:convert";
-import 'package:nutrition/models/food.dart';
-import 'package:nutrition/models/api/serving.dart';
+import "package:nutrition/models/food.dart";
+import "package:nutrition/models/api/serving.dart";
 
 class FatSecretService {
   Client _oauthClient;
@@ -44,8 +44,6 @@ class FatSecretService {
         Map jsonResponse = json.decode(response.body);
         return int.parse(jsonResponse["food_id"]["value"]);
       }
-    } else if (barcode == 0) {
-      print("Product not found!");
     }
 
     return -1;
@@ -89,6 +87,8 @@ class FatSecretService {
 
         return foodItem;
       }
+    } else if (itemID == 0) {
+      print("===== Product not found! =====");
     }
 
     return null;
