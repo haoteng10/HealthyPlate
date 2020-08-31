@@ -10,8 +10,7 @@ class InformationScreen extends StatefulWidget {
 class _InformationScreenState extends State<InformationScreen> {
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> arguments =
-        ModalRoute.of(context).settings.arguments;
+    final Map<String, String> arguments = ModalRoute.of(context).settings.arguments;
     final String image = arguments["image"];
 
     return Scaffold(
@@ -27,6 +26,7 @@ class _InformationScreenState extends State<InformationScreen> {
           Expanded(
             child: ItemInfo(),
           ),
+          // Put this in the same container as desc
         ],
       ),
     );
@@ -79,6 +79,7 @@ class ItemInfo extends StatelessWidget {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 5),
           metaData(
@@ -100,7 +101,56 @@ class ItemInfo extends StatelessWidget {
             "The lemon, Citrus limon, is a species of small evergreen tree in the flowering plant family Rutaceae, native to South Asia, primarily North eastern India. The tree's ellipsoidal yellow fruit is used for culinary and non-culinary purposes throughout the world, primarily for its juice, which has both culinary and cleaning uses.",
             style: TextStyle(height: 1.5, fontSize: 16),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 30),
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+              margin: EdgeInsets.only(bottom: 16),
+              width: size.width / 2,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(38.5),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    offset: Offset(0, 10),
+                    blurRadius: 33,
+                    color: kShadowColor,
+                  ),
+                ],
+              ),
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(
+                    Icons.arrow_back_ios,
+                    size: 18,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Return home",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: kBlackColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
