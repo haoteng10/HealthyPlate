@@ -1,16 +1,17 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:oauth2/oauth2.dart';
-import "package:http/http.dart" as http;
+import "package:nutrition/services/database.dart";
+import "package:nutrition/services/fatsecret.dart";
+import "package:provider/provider.dart";
+import "package:nutrition/models/user.dart";
 import "package:nutrition/components/barcode_scanner.dart";
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
 import "package:nutrition/components/food_list_card.dart";
 import "package:nutrition/components/daily_goal_card.dart";
 import "package:nutrition/components/search_bar.dart";
-import 'package:nutrition/temp/debug_section.dart';
+import "package:nutrition/temp/debug_section.dart";
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -18,54 +19,44 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FatSecretService _fatSecretService;
   // Move this to barcode_scanner.dart file
-  // ignore: unused_field
-  String _scanBarcode = "Unknown";
-  Client _oauthClient;
-  // DateTime _oauthExpDate;
 
-  Future<void> fetchToken() async {
-    final String _fatSecretClientID = DotEnv().env["FATSECRET_CLIENT_ID"];
-    final String _fatSecretClientSecret =
-        DotEnv().env["FATSECRET_CLIENT_SECRET"];
+  Future<int> scanBarcodeNormal() async {
+    String _barcodeScanRes;
+    String _err = "";
 
-    final _authorizationEndpoint =
-        Uri.parse("https://oauth.fatsecret.com/connect/token");
-    Client client = await clientCredentialsGrant(
-        _authorizationEndpoint, _fatSecretClientID, _fatSecretClientSecret);
-
-    setState(() {
-      _oauthClient = client;
-      // _oauthExpDate = client.credentials.expiration;
-    });
-
-    http.Response response = await _oauthClient.post(
-        "https://platform.fatsecret.com/rest/server.api?method=food.find_id_for_barcode&barcode=075720000814&format=json");
-    print(response.body);
-  }
-
-  Future<void> scanBarcodeNormal() async {
-    String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+      _barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
     } on PlatformException {
-      barcodeScanRes = "Failed to get platform version.";
+      _err = "Failed to get platform version.";
     }
 
-    if (!mounted) return;
+    if (!mounted) return null;
 
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
+    return int.parse(_barcodeScanRes);
+  }
 
-    //Run the fetchAPI function
+  Future<void> barcodeInput(String userUid) async {
+    int barcode = await scanBarcodeNormal();
+    int itemID = await _fatSecretService.findIDForBarcode(barcode);
+    if (itemID > 0) {
+      DatabaseService(uid: userUid).addFood(itemID.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fatSecretService = FatSecretService();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final user = Provider.of<User>(context);
 
     return Scaffold(
       backgroundColor: Colors.green[50],
@@ -139,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: GestureDetector(
-                      onTap: scanBarcodeNormal,
+                      onTap: () => barcodeInput(user.uid),
                       child: BarcodeScanner(),
                     ),
                   ),
@@ -150,18 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   //Debug Section
                   Debug(),
                   SizedBox(height: 30),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: [
-                        RaisedButton(
-                            child: Text("Fetch Token"),
-                            onPressed: () async {
-                              await fetchToken();
-                            }),
-                      ],
-                    ),
-                  )
                 ],
               ),
             ),
