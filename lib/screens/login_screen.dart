@@ -10,11 +10,14 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
-  String _email;
-  String _password;
+  String _email = "";
+  String _password = "";
   bool _loading = false;
-  String _errorMessage = "";
+  bool _invalidEmail = false;
+  bool _invalidPassword = false;
+  String _firebaseError = "";
 
   Future<void> anonAuthenticate() async {
     //Changing state so it is showing the loading widget
@@ -25,26 +28,38 @@ class _LoginScreenState extends State<LoginScreen> {
     dynamic result = await _auth.signInAnon();
     if (result == null) {
       setState(() {
-        _errorMessage = "Error occurs!";
+        _firebaseError = "Error occurs!";
         _loading = false;
       });
     }
   }
 
   Future<void> authenticate() async {
-    print("Email: $_email");
-    print("Password: $_password");
-
-    //Changing state so it is showing the loading widget
     setState(() {
       _loading = true;
+      _invalidEmail = false;
+      _invalidPassword = false;
     });
 
-    dynamic result = await _auth.loginWithEmailAndPassword(_email, _password);
-    if (result == null) {
+    if (_email.length < 1 || !_email.contains("@")) {
       setState(() {
-        _errorMessage = "Please enter a valid email!";
+        _invalidEmail = true;
       });
+    }
+
+    if (_password.length < 1) {
+      setState(() {
+        _invalidPassword = true;
+      });
+    }
+
+    if (!_invalidEmail && !_invalidPassword) {
+      dynamic result = await _auth.loginWithEmailAndPassword(_email, _password);
+      if (result == null) {
+        setState(() {
+          _firebaseError = "Please register first!";
+        });
+      }
     }
 
     setState(() {
@@ -70,127 +85,186 @@ class _LoginScreenState extends State<LoginScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            "Log In",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              "Log In",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          // Spacer(),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: buildEmailField(),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 30),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: buildPasswordField(),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 30),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Container(
-                                    height: 60,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white30,
-                                      borderRadius: BorderRadius.circular(29),
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                          offset: Offset(0, 10),
-                                          blurRadius: 20,
-                                          // color: kShadowColor,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Guest",
+                            // Spacer(),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: buildEmailField(),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            _invalidEmail
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                                        child: Text(
+                                          "Invalid email",
                                           style: TextStyle(
-                                            color: Colors.red[300],
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 15,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    await anonAuthenticate();
-                                  },
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                            SizedBox(height: 30), //Change this back to 30
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: buildPasswordField(),
                                 ),
-                              ),
-                              SizedBox(width: 20),
-                              Expanded(
-                                child: GestureDetector(
-                                  child: Container(
-                                    height: 60,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white30,
-                                      borderRadius: BorderRadius.circular(29),
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(
-                                          offset: Offset(0, 10),
-                                          blurRadius: 33,
-                                          // color: kShadowColor,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Login",
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            _invalidPassword
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                                        child: Text(
+                                          "Invalid password",
                                           style: TextStyle(
-                                            color: Colors.green[400],
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 15,
                                           ),
                                         ),
-                                      ],
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+                            SizedBox(height: 30),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: Container(
+                                      height: 60,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white30,
+                                        borderRadius: BorderRadius.circular(29),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                            offset: Offset(0, 10),
+                                            blurRadius: 20,
+                                            // color: kShadowColor,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Guest",
+                                            style: TextStyle(
+                                              color: Colors.red[300],
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    onTap: () async {
+                                      await anonAuthenticate();
+                                    },
                                   ),
-                                  onTap: () async => await authenticate(),
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
+                                SizedBox(width: 20),
+                                Expanded(
+                                  child: GestureDetector(
+                                    child: Container(
+                                      height: 60,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white30,
+                                        borderRadius: BorderRadius.circular(29),
+                                        boxShadow: <BoxShadow>[
+                                          BoxShadow(
+                                            offset: Offset(0, 10),
+                                            blurRadius: 33,
+                                            // color: kShadowColor,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Login",
+                                            style: TextStyle(
+                                              color: Colors.green[400],
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      await authenticate();
+                                      // if (_email.length > 0 && _password.length > 0) {
+                                      //   await authenticate();
+                                      // }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _firebaseError,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -217,6 +291,17 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.only(left: 20, top: 5),
             child: TextField(
+              // validator: (String val) {
+              //   if (val.isEmpty) {
+              //     _invalidEmail = true;
+              //     return;
+              //   } else {
+              //     setState(() {
+              //       _invalidEmail = false;
+              //     });
+              //   }
+              //   return null;
+              // },
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -271,6 +356,19 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.only(left: 20, top: 5),
             child: TextField(
+              // validator: (String val) {
+              //   if (val.length < 5) {
+              //     setState(() {
+              //       _invalidPassword = true;
+              //     });
+              //     return;
+              //   } else {
+              //     setState(() {
+              //       _invalidPassword = false;
+              //     });
+              //   }
+              //   return null;
+              // },
               decoration: InputDecoration(
                 border: InputBorder.none,
                 prefixIcon: Padding(

@@ -58,8 +58,7 @@ class _TempLoginState extends State<TempLogin> {
                     children: <Widget>[
                       SizedBox(height: 20.0),
                       TextFormField(
-                        validator: (String val) =>
-                            val.isEmpty ? "Enter an email" : null,
+                        validator: (String val) => val.isEmpty ? "Enter an email" : null,
                         onChanged: (String val) {
                           setState(() => _email = val);
                         },
@@ -67,9 +66,7 @@ class _TempLoginState extends State<TempLogin> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         obscureText: true,
-                        validator: (String val) => val.length < 5
-                            ? "Enter a password with length > 5"
-                            : null,
+                        validator: (String val) => val.length < 5 ? "Enter a password with length > 5" : null,
                         onChanged: (String val) {
                           setState(() => _password = val);
                         },
@@ -79,8 +76,7 @@ class _TempLoginState extends State<TempLogin> {
                         children: [
                           RaisedButton(
                             color: Colors.blue[800],
-                            child: Text("Login",
-                                style: TextStyle(color: Colors.white)),
+                            child: Text("Login", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 await authenticate();
