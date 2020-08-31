@@ -48,7 +48,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
               title: Text("Home"),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_circle_outline),
+              icon: Icon(Icons.person_add),
               title: Text("Register"),
             ),
             BottomNavigationBarItem(

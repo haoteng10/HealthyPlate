@@ -4,6 +4,8 @@ import "package:nutrition/services/auth.dart";
 
 import "../constants.dart";
 
+// TODO: CHANGE BACKGROUND
+
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -12,28 +14,46 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final AuthService _auth = AuthService();
 
-  String _email;
-  String _password;
+  String _email = "";
+  String _password = "";
   bool _loading = false;
-  String _errorMessage = "";
+  bool _invalidEmail = false;
+  bool _invalidPassword = false;
+  String _firebaseError = "";
 
   Future<void> authenticate() async {
     print("Email: $_email");
     print("Password: $_password");
-
-    //Changing state so it is showing the loading widget
     setState(() {
       _loading = true;
+      _invalidEmail = false;
+      _invalidPassword = false;
     });
 
-    dynamic result =
-        await _auth.registerWithEmailAndPassword(_email, _password);
-    if (result == null) {
+    if (_email.length < 1 || !_email.contains("@")) {
       setState(() {
-        _errorMessage = "Please enter a valid email!";
-        _loading = false;
+        _invalidEmail = true;
       });
     }
+
+    if (_password.length < 1) {
+      setState(() {
+        _invalidPassword = true;
+      });
+    }
+
+    if (!_invalidEmail && !_invalidPassword) {
+      dynamic result = await _auth.registerWithEmailAndPassword(_email, _password);
+      if (result == null) {
+        setState(() {
+          _firebaseError = "Please enter a valid email!";
+        });
+      }
+    }
+
+    setState(() {
+      _loading = false;
+    });
   }
 
   @override
@@ -80,6 +100,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                         SizedBox(
+                          height: 8,
+                        ),
+                        _invalidEmail
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 30,
+                                    ),
+                                    child: Text(
+                                      "Please enter a valid email",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        backgroundColor: Colors.blue[900],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+                        SizedBox(
                           height: 30,
                         ),
                         Row(
@@ -91,13 +135,37 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ],
                         ),
                         SizedBox(
+                          height: 8,
+                        ),
+                        _invalidPassword
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 30,
+                                    ),
+                                    child: Text(
+                                      "Your password must be > 5 characters",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        backgroundColor: Colors.blue[900],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+
+                        SizedBox(
                           height: 30,
                         ),
                         Row(
                           children: <Widget>[
                             Expanded(
-                              child: buildActionButton(
-                                  context, "Register", Colors.purple, () async {
+                              child: buildActionButton(context, "Register", Colors.purple, () async {
                                 await authenticate();
                               }),
                             )
@@ -112,8 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
   }
 
-  GestureDetector buildActionButton(
-      BuildContext context, String name, Color color, Function action) {
+  GestureDetector buildActionButton(BuildContext context, String name, Color color, Function action) {
     return GestureDetector(
       child: Container(
         height: 60,
@@ -138,54 +205,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
       onTap: action,
-    );
-  }
-
-  Container buildPasswordField() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white60,
-        borderRadius: BorderRadius.circular(29),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20, top: 5),
-            child: TextField(
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                prefixIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 5),
-                  child: Icon(
-                    Icons.lock,
-                    color: kIconColor,
-                  ),
-                ),
-                hintText: "Password",
-                hintStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              obscureText: true,
-              onChanged: (String input) {
-                setState(() {
-                  _password = input;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -228,6 +247,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
               onChanged: (String input) {
                 setState(() {
                   _email = input;
+                });
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container buildPasswordField() {
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        color: Colors.white60,
+        borderRadius: BorderRadius.circular(29),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 20, top: 5),
+            child: TextField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                prefixIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 5),
+                  child: Icon(
+                    Icons.lock,
+                    color: kIconColor,
+                  ),
+                ),
+                hintText: "Password",
+                hintStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+              obscureText: true,
+              onChanged: (String input) {
+                setState(() {
+                  _password = input;
                 });
               },
             ),
