@@ -1,4 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
+import 'package:nutrition/models/api/serving.dart';
 import "package:nutrition/models/food.dart";
 import "package:nutrition/services/fatsecret.dart";
 
@@ -31,6 +32,41 @@ class DatabaseService {
     });
   }
 
+  Future<void> manualAddFood(
+    String brand,
+    String name,
+    String calories,
+    String carbohydrate,
+    String fat,
+    String protein,
+    String servingAmount,
+    String servingUnit,
+    String servingDescription,
+  ) async {
+    Map inputFood = {
+      "brandName": brand,
+      "foodName": name,
+      "serving": {
+        "calories": calories,
+        "carbohydrate": carbohydrate,
+        "fat": fat,
+        "protein": protein,
+        "servingAmount": servingAmount,
+        "servingUnit": servingUnit,
+        "servingDescription": servingDescription,
+      },
+    };
+
+    DocumentReference addedFoodDocument = await foodsCollection.add({
+      "food": inputFood,
+      "user": Firestore.instance.document("users/" + uid),
+    });
+
+    await usersCollection.document(uid).updateData({
+      "foods": FieldValue.arrayUnion([addedFoodDocument]),
+    });
+  }
+
   Future<List<FoodData>> _foodDataListFromFoodCollectionSnapshot(
       QuerySnapshot snapshot) async {
     dynamic futures = snapshot.documents.map((doc) async {
@@ -41,10 +77,19 @@ class DatabaseService {
       //Returns null if the condition is not meet
       //Therefore, the returned array can be something like this: [null, null, "instance of Food"]
       if (userData.data["uid"] == uid) {
-        return await FatSecretService()
-            .getFoodNutrition(int.parse(doc["food_id"]));
+        if (doc["food_id"] != null) {
+          return await FatSecretService()
+              .getFoodNutrition(int.parse(doc["food_id"]));
+        } else {}
       }
+      return FoodData(
+          //Placeholder Return (Will be removed)
+          foodName: "x",
+          brandName: "y",
+          foodUrl: "z",
+          serving: Serving());
     });
+
     return await Future.wait(futures);
   }
 

@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
+import 'package:nutrition/components/manual_nutrition_dialogue.dart';
 import "package:nutrition/services/database.dart";
 import "package:nutrition/services/fatsecret.dart";
 import "package:provider/provider.dart";
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<int> scanBarcodeNormal() async {
     String _barcodeScanRes;
+    // ignore: unused_local_variable
     String _err = "";
 
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -44,6 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
     int itemID = await _fatSecretService.findIDForBarcode(barcode);
     if (itemID > 0) {
       DatabaseService(uid: userUid).addFood(itemID.toString());
+    } else {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => ManualNutritionDialogue()));
     }
   }
 
@@ -57,6 +62,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final user = Provider.of<User>(context);
+
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return ManualNutritionDialogue();
+        },
+      );
+    }
 
     return Scaffold(
       backgroundColor: Colors.green[50],
@@ -141,6 +156,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   //Debug Section
                   Debug(),
                   SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: RaisedButton.icon(
+                      onPressed: () {
+                        _showMyDialog();
+                      },
+                      icon: Icon(Icons.add_circle),
+                      label: Text("Manual Addition Dialogue"),
+                    ),
+                  )
                 ],
               ),
             ),
