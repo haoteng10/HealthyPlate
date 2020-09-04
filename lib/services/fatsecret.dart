@@ -87,7 +87,7 @@ class FatSecretService {
 
         return foodItem;
       }
-    } else if (itemID == 0) {
+    } else {
       print("===== Product not found! =====");
     }
 
