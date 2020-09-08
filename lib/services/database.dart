@@ -80,14 +80,22 @@ class DatabaseService {
         if (doc["food_id"] != null) {
           return await FatSecretService()
               .getFoodNutrition(int.parse(doc["food_id"]));
-        } else {}
+        } else {
+          return FoodData(
+            foodName: doc["food"]["foodName"],
+            brandName: doc["food"]["brandName"],
+            serving: Serving(
+              calories: doc["food"]["serving"]["calories"],
+              carbohydrate: doc["food"]["serving"]["carbohydrate"],
+              fat: doc["food"]["serving"]["fat"],
+              protein: doc["food"]["serving"]["protein"],
+              servingAmount: doc["food"]["serving"]["servingAmount"],
+              servingDescription: doc["food"]["serving"]["servingDescription"],
+              servingUnit: doc["food"]["serving"]["servingUnit"],
+            ),
+          );
+        }
       }
-      return FoodData(
-          //Placeholder Return (Will be removed)
-          foodName: "x",
-          brandName: "y",
-          foodUrl: "z",
-          serving: Serving());
     });
 
     return await Future.wait(futures);
