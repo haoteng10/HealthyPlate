@@ -1,17 +1,18 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
+import 'package:nutrition/components/home_screen/manual_food_bar.dart';
 import 'package:nutrition/components/manual_nutrition_dialogue.dart';
 import "package:nutrition/services/database.dart";
 import "package:nutrition/services/fatsecret.dart";
 import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
-import "package:nutrition/components/barcode_scanner.dart";
+import 'package:nutrition/components/home_screen/barcode_bar.dart';
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/loading_screen.dart";
-import "package:nutrition/components/food_list_card.dart";
-import "package:nutrition/components/daily_goal_card.dart";
-import "package:nutrition/components/search_bar.dart";
+import 'package:nutrition/components/home_screen/food_list_card.dart';
+import 'package:nutrition/components/home_screen/daily_goal_card.dart';
+import 'package:nutrition/components/home_screen/search_bar.dart';
 import "package:nutrition/temp/debug_section.dart";
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FatSecretService _fatSecretService;
-  // Move this to barcode_scanner.dart file
 
   Future<int> scanBarcodeNormal() async {
     String _barcodeScanRes;
@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Future<void> _showMyDialog() async {
       return showDialog<void>(
         context: context,
-        barrierDismissible: false, // user must tap button!
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return ManualNutritionDialogue();
         },
@@ -146,7 +146,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: GestureDetector(
                       onTap: () => barcodeInput(user.uid),
-                      child: BarcodeScanner(),
+                      child: BarcodeBar(cardContent: "Scan food barcode"),
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: GestureDetector(
+                      onTap: () => _showMyDialog(),
+                      child: ManualFoodBar(cardContent: "Record your food"),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -156,16 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   //Debug Section
                   Debug(),
                   SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: RaisedButton.icon(
-                      onPressed: () {
-                        _showMyDialog();
-                      },
-                      icon: Icon(Icons.add_circle),
-                      label: Text("Manual Addition Dialogue"),
-                    ),
-                  )
                 ],
               ),
             ),

@@ -28,7 +28,6 @@ class _ManualNutritionDialogueState extends State<ManualNutritionDialogue> {
     final user = Provider.of<User>(context);
 
     Future<void> manualAddFoodItem() async {
-      print("Food added!");
       DatabaseService(uid: user.uid).manualAddFood(
         _brand,
         _name,

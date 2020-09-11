@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "../constants.dart";
+import '../../constants.dart';
 
 class DailyGoalCard extends StatelessWidget {
   final String title;
@@ -17,7 +17,7 @@ class DailyGoalCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(38.5),
-        boxShadow:<BoxShadow>[
+        boxShadow: <BoxShadow>[
           BoxShadow(
             offset: Offset(0, 10),
             blurRadius: 33,

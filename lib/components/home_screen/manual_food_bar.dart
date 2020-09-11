@@ -1,12 +1,15 @@
 import "package:flutter/material.dart";
-import "../constants.dart";
+import "package:nutrition/constants.dart";
 
-class BarcodeScanner extends StatefulWidget {
+class ManualFoodBar extends StatefulWidget {
+  final String cardContent;
+
+  const ManualFoodBar({this.cardContent});
   @override
-  _BarcodeScannerState createState() => _BarcodeScannerState();
+  _ManualFoodBarState createState() => _ManualFoodBarState();
 }
 
-class _BarcodeScannerState extends State<BarcodeScanner> {
+class _ManualFoodBarState extends State<ManualFoodBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,10 +33,10 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 20, right: 15),
-                child: Icon(Icons.camera),
+                child: Icon(Icons.add_circle),
               ),
               Text(
-                "Scan food barcode",
+                widget.cardContent,
                 style: TextStyle(
                   fontSize: 16,
                   color: kSecondaryColor,

@@ -15,16 +15,20 @@ class DatabaseService {
 
   Future<void> createUser(String name) async {
     await usersCollection.document(uid).setData({
-      "uid": uid, //Will be removed in the future
+      "uid": uid,
       "name": name,
       "foods": [],
     });
   }
 
   Future<void> addFood(String foodID) async {
+    DateTime now = DateTime.now();
+    String timeString = now.toString();
+
     DocumentReference addedFoodDocument = await foodsCollection.add({
       "food_id": foodID,
       "user": Firestore.instance.document("users/" + uid),
+      "dateTime": timeString,
     });
 
     await usersCollection.document(uid).updateData({
@@ -57,9 +61,14 @@ class DatabaseService {
       },
     };
 
+    DateTime now = DateTime.now();
+    String timeString = now.toString();
+    // DateTime convertedTime = DateTime.parse(timeString);
+
     DocumentReference addedFoodDocument = await foodsCollection.add({
       "food": inputFood,
       "user": Firestore.instance.document("users/" + uid),
+      "dateTime": timeString,
     });
 
     await usersCollection.document(uid).updateData({
@@ -75,7 +84,7 @@ class DatabaseService {
       //If the user"s uid in the food document is equal to the user"s uid of the application
       //Return the food document to the StreamBuilder in an array of items
       //Returns null if the condition is not meet
-      //Therefore, the returned array can be something like this: [null, null, "instance of Food"]
+      //Therefore, the returned array can be something like this: [null, null, "instance of FoodData"]
       if (userData.data["uid"] == uid) {
         if (doc["food_id"] != null) {
           return await FatSecretService()
@@ -109,7 +118,7 @@ class DatabaseService {
       //If the user"s uid in the food document is equal to the user"s uid of the application
       //Return the food document to the StreamBuilder in an array of items
       //Returns null if the condition is not meet
-      //Therefore, the returned array can be something like this: [null, null, "instance of Food"]
+      //Therefore, the returned array can be something like this: [null, null, "instance of FoodData"]
       if (userData.data["uid"] == uid) {
         return Food(
           foodID: doc.data["food_id"],

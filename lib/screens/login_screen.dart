@@ -59,6 +59,8 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _firebaseError = "Please register first!";
         });
+      } else {
+        return;
       }
     }
 
@@ -123,7 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30),
                                         child: Text(
                                           "Invalid email",
                                           style: TextStyle(
@@ -152,7 +155,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30),
                                         child: Text(
                                           "Invalid password",
                                           style: TextStyle(
@@ -184,8 +188,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ],
                                       ),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             "Guest",
@@ -221,8 +227,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ],
                                       ),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
                                             "Login",

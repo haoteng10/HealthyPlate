@@ -43,11 +43,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     if (!_invalidEmail && !_invalidPassword) {
-      dynamic result = await _auth.registerWithEmailAndPassword(_email, _password);
+      dynamic result =
+          await _auth.registerWithEmailAndPassword(_email, _password);
       if (result == null) {
         setState(() {
           _firebaseError = "Please enter a valid email!";
         });
+      } else {
+        return;
       }
     }
 
@@ -165,7 +168,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Row(
                           children: <Widget>[
                             Expanded(
-                              child: buildActionButton(context, "Register", Colors.purple, () async {
+                              child: buildActionButton(
+                                  context, "Register", Colors.purple, () async {
                                 await authenticate();
                               }),
                             )
@@ -180,7 +184,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
   }
 
-  GestureDetector buildActionButton(BuildContext context, String name, Color color, Function action) {
+  GestureDetector buildActionButton(
+      BuildContext context, String name, Color color, Function action) {
     return GestureDetector(
       child: Container(
         height: 60,
