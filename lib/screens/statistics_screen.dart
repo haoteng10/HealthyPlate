@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/temp/bar_chart_sample_3.dart';
+import 'package:nutrition/components/statistics_screen/daily_intake_bar_chart.dart';
+import 'package:nutrition/components/statistics_screen/weekly_calories_bar_chart.dart';
 
 class StatisticsScreen extends StatefulWidget {
   @override
@@ -11,25 +12,15 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: <Widget>[
-          RichText(
-            text: TextSpan(
-              style: Theme.of(context).textTheme.headline4,
-              children: <InlineSpan>[
-                TextSpan(
-                  text: "Calories",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 10),
-          BarChartSample3(),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            DailyIntakeBarChart(),
+            SizedBox(height: 18),
+            WeeklyCaloriesBarChart(),
+          ],
+        ),
       ),
     ));
   }
