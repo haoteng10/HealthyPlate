@@ -25,22 +25,31 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
 
   int touchedIndex;
 
+  // Gets foodData from database, filter, and calculate the total daily calories
+  Map calculateIntake(List<FoodData> filteredFoods) {
+    double _calories = 0;
+    double _carbohydrate = 0;
+    double _fat = 0;
+    double _protein = 0;
+
+    filteredFoods.forEach((FoodData food) {
+      _calories = _calories + double.parse(food.serving.calories);
+      _carbohydrate = _carbohydrate + double.parse(food.serving.carbohydrate);
+      _fat = _fat + double.parse(food.serving.fat);
+      _protein = _protein + double.parse(food.serving.protein);
+    });
+
+    return {
+      "calories": _calories,
+      "carbohydrate": _carbohydrate,
+      "fat": _fat,
+      "protein": _protein,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
-    // Gets foodData from database, filter, and calculate the total daily calories
-    int calculateCalories(List<FoodData> filteredFoods) {
-      print("Calculate:");
-      int _calories = 0;
-
-      filteredFoods.forEach((FoodData food) {
-        int foodCalories = int.parse(food.serving.calories);
-        _calories = _calories + foodCalories;
-        print("Total Calories ${_calories.toString()}");
-      });
-      return _calories;
-    }
 
     return StreamBuilder<List<FoodData>>(
       stream: DatabaseService(uid: user.uid).foodData,
@@ -49,7 +58,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
           List<FoodData> filteredFoods = snapshot.data
               .where((FoodData food) => food == null ? false : true)
               .toList();
-          int _calories = calculateCalories(filteredFoods);
+          Map _dailyIntake = calculateIntake(filteredFoods);
           return AspectRatio(
             aspectRatio: 1,
             child: Card(
@@ -66,7 +75,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Text(
-                          'Daily Intakes',
+                          'Daily (Total) Intakes',
                           style: TextStyle(
                               color: const Color(0xff0f4a3c),
                               fontSize: 24,
@@ -90,7 +99,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: BarChart(
-                              mainBarData(_calories),
+                              mainBarData(_dailyIntake),
                             ),
                           ),
                         ),
@@ -137,23 +146,27 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
     );
   }
 
-  List<BarChartGroupData> showingGroups(int _calories) => List.generate(4, (i) {
+  List<BarChartGroupData> showingGroups(Map _dailyIntake) =>
+      List.generate(4, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, _calories.toDouble(),
+            return makeGroupData(0, _dailyIntake["calories"],
                 isTouched: i == touchedIndex); // X, Y, ...and other parameters
           case 1:
-            return makeGroupData(1, 50, isTouched: i == touchedIndex);
+            return makeGroupData(1, _dailyIntake["carbohydrate"],
+                isTouched: i == touchedIndex);
           case 2:
-            return makeGroupData(2, 250, isTouched: i == touchedIndex);
+            return makeGroupData(2, _dailyIntake["fat"],
+                isTouched: i == touchedIndex);
           case 3:
-            return makeGroupData(3, 300, isTouched: i == touchedIndex);
+            return makeGroupData(3, _dailyIntake["protein"],
+                isTouched: i == touchedIndex);
           default:
             return null;
         }
       });
 
-  BarChartData mainBarData(int _calories) {
+  BarChartData mainBarData(Map _dailyIntake) {
     return BarChartData(
       barTouchData: BarTouchData(
         touchTooltipData: BarTouchTooltipData(
@@ -218,7 +231,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
       borderData: FlBorderData(
         show: false, //Border around the "actual" chart
       ),
-      barGroups: showingGroups(_calories),
+      barGroups: showingGroups(_dailyIntake),
     );
   }
 }
