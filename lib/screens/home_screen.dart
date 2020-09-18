@@ -38,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (!mounted) return null;
 
+    print("Barcode: " + _barcodeScanRes);
+
     return int.parse(_barcodeScanRes);
   }
 

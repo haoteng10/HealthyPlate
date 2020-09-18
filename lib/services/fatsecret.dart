@@ -64,19 +64,36 @@ class FatSecretService {
       if (jsonResponse.statusCode == 200) {
         Map response = json.decode(jsonResponse.body)["food"];
 
-        Map mapServing = response["servings"]["serving"];
+        dynamic mapServing = response["servings"]["serving"];
+        // bool multipleServings = false;
+        Serving itemServing;
 
-        Serving itemServing = Serving(
-          calories: mapServing["calories"],
-          carbohydrate: mapServing["carbohydrate"],
-          fat: mapServing["fat"],
-          measurementDescription: mapServing["measurement_description"],
-          servingAmount: mapServing["metric_serving_amount"],
-          servingUnit: mapServing["metric_serving_unit"],
-          numberOfUnits: mapServing["number_of_units"],
-          protein: mapServing["protein"],
-          servingDescription: mapServing["serving_description"],
-        );
+        if (mapServing is List) {
+          // multipleServings = true;
+          itemServing = Serving(
+            calories: mapServing[0]["calories"],
+            carbohydrate: mapServing[0]["carbohydrate"],
+            fat: mapServing[0]["fat"],
+            measurementDescription: mapServing[0]["measurement_description"],
+            servingAmount: mapServing[0]["metric_serving_amount"],
+            servingUnit: mapServing[0]["metric_serving_unit"],
+            numberOfUnits: mapServing[0]["number_of_units"],
+            protein: mapServing[0]["protein"],
+            servingDescription: mapServing[0]["serving_description"],
+          );
+        } else {
+          itemServing = Serving(
+            calories: mapServing["calories"],
+            carbohydrate: mapServing["carbohydrate"],
+            fat: mapServing["fat"],
+            measurementDescription: mapServing["measurement_description"],
+            servingAmount: mapServing["metric_serving_amount"],
+            servingUnit: mapServing["metric_serving_unit"],
+            numberOfUnits: mapServing["number_of_units"],
+            protein: mapServing["protein"],
+            servingDescription: mapServing["serving_description"],
+          );
+        }
 
         FoodData foodItem = FoodData(
           brandName: response["brand_name"],
