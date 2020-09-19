@@ -1,5 +1,5 @@
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/material.dart";
 
 class WeeklyCaloriesBarChart extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class WeeklyCaloriesBarChartState extends State<WeeklyCaloriesBarChart> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text(
-                    'Weekly Calories',
+                    "Weekly Calories",
                     style: TextStyle(
                         color: const Color(0xff0f4a3c),
                         fontSize: 24,
@@ -34,7 +34,7 @@ class WeeklyCaloriesBarChartState extends State<WeeklyCaloriesBarChart> {
                     height: 4,
                   ),
                   Text(
-                    'A weekly view of your calories consumption',
+                    "A weekly view of your calories consumption",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
@@ -101,21 +101,21 @@ class WeeklyCaloriesBarChartState extends State<WeeklyCaloriesBarChart> {
           getTitles: (double value) {
             switch (value.toInt()) {
               case 0:
-                return 'Mon';
+                return "Mon";
               case 1:
-                return 'Tue';
+                return "Tue";
               case 2:
-                return 'Wed';
+                return "Wed";
               case 3:
-                return 'Thu';
+                return "Thu";
               case 4:
-                return 'Fri';
+                return "Fri";
               case 5:
-                return 'Sat';
+                return "Sat";
               case 6:
-                return 'Sun';
+                return "Sun";
               default:
-                return '';
+                return "";
             }
           },
         ),

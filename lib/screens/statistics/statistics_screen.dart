@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
-import 'package:nutrition/components/statistics_screen/daily_intake_bar_chart.dart';
-import 'package:nutrition/components/statistics_screen/weekly_calories_bar_chart.dart';
+import "components/daily_intake_bar_chart.dart";
+import "components/weekly_calories_bar_chart.dart";
 
 class StatisticsScreen extends StatefulWidget {
   @override
@@ -16,9 +16,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            DailyIntakeBarChart(),
+            // DailyIntakeBarChart(),
             SizedBox(height: 18),
-            WeeklyCaloriesBarChart(),
+            // WeeklyCaloriesBarChart(),
           ],
         ),
       ),

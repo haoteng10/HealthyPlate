@@ -1,16 +1,15 @@
 import "package:flutter/material.dart";
-import '../../constants.dart';
+import "package:nutrition/constants.dart";
 
-class BarcodeBar extends StatefulWidget {
+class ManualFoodBar extends StatefulWidget {
   final String cardContent;
 
-  const BarcodeBar({@required this.cardContent});
-
+  const ManualFoodBar({this.cardContent});
   @override
-  _BarcodeBarState createState() => _BarcodeBarState();
+  _ManualFoodBarState createState() => _ManualFoodBarState();
 }
 
-class _BarcodeBarState extends State<BarcodeBar> {
+class _ManualFoodBarState extends State<ManualFoodBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,7 +33,7 @@ class _BarcodeBarState extends State<BarcodeBar> {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 20, right: 15),
-                child: Icon(Icons.camera),
+                child: Icon(Icons.add),
               ),
               Text(
                 widget.cardContent,

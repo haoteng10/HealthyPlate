@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:nutrition/models/food.dart";
-import "package:nutrition/screens/loading_screen.dart";
+import 'package:nutrition/components/loading.dart';
 import "package:nutrition/services/database.dart";
 import "package:nutrition/models/user.dart";
 import "package:provider/provider.dart";

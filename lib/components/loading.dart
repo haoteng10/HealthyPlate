@@ -1,13 +1,16 @@
 import "package:flutter/material.dart";
 import "package:flutter_spinkit/flutter_spinkit.dart";
 
-class Loading extends StatelessWidget {
+class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SpinKitDoubleBounce(
-        color: Colors.white,
-        size: 100,
+    return Scaffold(
+      backgroundColor: Colors.lightBlue[300],
+      body: Center(
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100,
+        ),
       ),
     );
   }

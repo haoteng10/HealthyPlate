@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import "package:nutrition/constants.dart";
-import 'package:nutrition/screens/navigation_screen.dart';
+import "package:flutter_dotenv/flutter_dotenv.dart";
+import "package:nutrition/components/bottom_nav.dart";
 import "package:nutrition/services/auth.dart";
 import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
 import "package:nutrition/components/rounded_button.dart";
+import "theme.dart";
 
 void main() async {
   await DotEnv().load(".env");
@@ -26,14 +26,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Nutrition App",
-        theme: ThemeData(
-          primarySwatch: Colors.amber,
-          scaffoldBackgroundColor: Colors.white,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          textTheme: Theme.of(context).textTheme.apply(
-                displayColor: kBlackColor,
-              ),
-        ),
+        theme: theme(),
         home: WelcomeScreen(),
       ),
     );
@@ -85,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return NavigationScreen();
+                        return BottomNav();
                       },
                     ),
                   );

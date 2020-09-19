@@ -1,19 +1,18 @@
 import "package:flutter/material.dart";
-import "package:nutrition/screens/login_screen.dart";
-import "package:nutrition/screens/register_screen.dart";
-import "package:nutrition/screens/statistics_screen.dart";
+import "package:nutrition/screens/login/login_screen.dart";
+import "package:nutrition/screens/login/register/register_screen.dart";
+import "package:nutrition/screens/statistics/statistics_screen.dart";
 import "package:nutrition/screens/user_profile_screen.dart";
 import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
+import "../screens/home/home_screen.dart";
 
-import "home_screen.dart";
-
-class NavigationScreen extends StatefulWidget {
+class BottomNav extends StatefulWidget {
   @override
-  _NavigationScreenState createState() => _NavigationScreenState();
+  _BottomNavState createState() => _BottomNavState();
 }
 
-class _NavigationScreenState extends State<NavigationScreen> {
+class _BottomNavState extends State<BottomNav> {
   // Add global state to determine if the login button should change to account
   bool _isLoggedIn = false;
 

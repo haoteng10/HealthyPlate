@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:nutrition/services/auth.dart";
-import "package:nutrition/screens/loading_screen.dart";
+import 'package:nutrition/components/loading.dart';
 
 class TempLogin extends StatefulWidget {
   @override

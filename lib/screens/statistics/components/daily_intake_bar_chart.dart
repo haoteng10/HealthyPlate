@@ -1,10 +1,10 @@
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-// import 'package:nutrition/components/loading.dart';
-import 'package:nutrition/models/food.dart';
-import 'package:nutrition/services/database.dart';
-import 'package:provider/provider.dart';
-import 'package:nutrition/models/user.dart';
+import "package:fl_chart/fl_chart.dart";
+import "package:flutter/material.dart";
+// import "package:nutrition/components/loading.dart";
+import "package:nutrition/models/food.dart";
+import "package:nutrition/services/database.dart";
+import "package:provider/provider.dart";
+import "package:nutrition/models/user.dart";
 
 class DailyIntakeBarChart extends StatefulWidget {
   final List<Color> availableColors = [
@@ -75,7 +75,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Text(
-                          'Daily (Total) Intakes',
+                          "Daily (Total) Intakes",
                           style: TextStyle(
                               color: const Color(0xff0f4a3c),
                               fontSize: 24,
@@ -85,7 +85,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
                           height: 4,
                         ),
                         Text(
-                          'A daily overview of your consumption',
+                          "A daily overview of your consumption",
                           style: TextStyle(
                               color: const Color(0xff379982),
                               fontSize: 18,
@@ -175,19 +175,19 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
               String intakeType;
               switch (group.x.toInt()) {
                 case 0:
-                  intakeType = 'Calories';
+                  intakeType = "Calories";
                   break;
                 case 1:
-                  intakeType = 'Carbohydrate';
+                  intakeType = "Carbohydrate";
                   break;
                 case 2:
-                  intakeType = 'Fat';
+                  intakeType = "Fat";
                   break;
                 case 3:
-                  intakeType = 'Protein';
+                  intakeType = "Protein";
                   break;
               }
-              return BarTooltipItem(intakeType + '\n' + (rod.y - 1).toString(),
+              return BarTooltipItem(intakeType + "\n" + (rod.y - 1).toString(),
                   TextStyle(color: Colors.yellow));
             }),
         touchCallback: (barTouchResponse) {
@@ -212,15 +212,15 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
           getTitles: (double value) {
             switch (value.toInt()) {
               case 0:
-                return 'Calories';
+                return "Calories";
               case 1:
-                return 'Carbohydrate';
+                return "Carbohydrate";
               case 2:
-                return 'Fat';
+                return "Fat";
               case 3:
-                return 'Protein';
+                return "Protein";
               default:
-                return '';
+                return "";
             }
           },
         ),
