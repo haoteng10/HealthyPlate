@@ -16,9 +16,9 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            // DailyIntakeBarChart(),
+            DailyIntakeBarChart(),
             SizedBox(height: 18),
-            // WeeklyCaloriesBarChart(),
+            WeeklyCaloriesBarChart(),
           ],
         ),
       ),

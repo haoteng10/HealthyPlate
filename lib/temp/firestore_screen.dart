@@ -31,8 +31,8 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
                 if (food != null) {
                   return Card(
                     child: ListTile(
-                      title:
-                          Text("Name: ${food.brandName + " " + food.foodName}"),
+                      title: Text(
+                          "Name: ${(food.brandName ?? "") + " " + (food.foodName ?? "")}"),
                       subtitle: Text("URL: ${food.foodUrl}"),
                     ),
                   );
