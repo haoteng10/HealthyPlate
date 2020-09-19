@@ -64,43 +64,70 @@ class FatSecretService {
       if (jsonResponse.statusCode == 200) {
         Map response = json.decode(jsonResponse.body)["food"];
 
-        dynamic mapServing = response["servings"]["serving"];
-        // bool multipleServings = false;
         Serving itemServing;
 
-        if (mapServing is List) {
-          // multipleServings = true;
+        // print(response);
+
+        try {
+          dynamic mapServing = response["servings"]["serving"];
+
+          if (mapServing is List) {
+            // multipleServings = true;
+            itemServing = Serving(
+              calories: mapServing[0]["calories"],
+              carbohydrate: mapServing[0]["carbohydrate"],
+              fat: mapServing[0]["fat"],
+              measurementDescription: mapServing[0]["measurement_description"],
+              servingAmount: mapServing[0]["metric_serving_amount"],
+              servingUnit: mapServing[0]["metric_serving_unit"],
+              numberOfUnits: mapServing[0]["number_of_units"],
+              protein: mapServing[0]["protein"],
+              servingDescription: mapServing[0]["serving_description"],
+            );
+          } else {
+            itemServing = Serving(
+              calories: mapServing["calories"],
+              carbohydrate: mapServing["carbohydrate"],
+              fat: mapServing["fat"],
+              measurementDescription: mapServing["measurement_description"],
+              servingAmount: mapServing["metric_serving_amount"],
+              servingUnit: mapServing["metric_serving_unit"],
+              numberOfUnits: mapServing["number_of_units"],
+              protein: mapServing["protein"],
+              servingDescription: mapServing["serving_description"],
+            );
+          }
+        } catch (err) {
           itemServing = Serving(
-            calories: mapServing[0]["calories"],
-            carbohydrate: mapServing[0]["carbohydrate"],
-            fat: mapServing[0]["fat"],
-            measurementDescription: mapServing[0]["measurement_description"],
-            servingAmount: mapServing[0]["metric_serving_amount"],
-            servingUnit: mapServing[0]["metric_serving_unit"],
-            numberOfUnits: mapServing[0]["number_of_units"],
-            protein: mapServing[0]["protein"],
-            servingDescription: mapServing[0]["serving_description"],
+            calories: "0",
+            carbohydrate: "0",
+            fat: "0",
+            protein: "0",
+            measurementDescription: "",
+            servingAmount: "",
+            servingUnit: "",
+            numberOfUnits: "",
+            servingDescription: "",
           );
-        } else {
-          itemServing = Serving(
-            calories: mapServing["calories"],
-            carbohydrate: mapServing["carbohydrate"],
-            fat: mapServing["fat"],
-            measurementDescription: mapServing["measurement_description"],
-            servingAmount: mapServing["metric_serving_amount"],
-            servingUnit: mapServing["metric_serving_unit"],
-            numberOfUnits: mapServing["number_of_units"],
-            protein: mapServing["protein"],
-            servingDescription: mapServing["serving_description"],
-          );
+          print(err);
+          print("Serving failed to retrieve! Using backup values instead.");
         }
 
-        FoodData foodItem = FoodData(
-          brandName: response["brand_name"],
-          foodName: response["food_name"],
-          foodUrl: response["food_url"],
-          serving: itemServing,
-        );
+        FoodData foodItem;
+
+        try {
+          foodItem = FoodData(
+            brandName: response["brand_name"] ?? "",
+            foodName: response["food_name"] ?? "",
+            foodUrl: response["food_url"] ?? "",
+            serving: itemServing,
+          );
+        } catch (err) {
+          print(err);
+          print(
+              "Something wrong with food names. Using backup values instead.");
+          foodItem = FoodData();
+        }
 
         return foodItem;
       }

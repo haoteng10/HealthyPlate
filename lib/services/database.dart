@@ -85,8 +85,8 @@ class DatabaseService {
       //Return the food document to the StreamBuilder in an array of items
       //Returns null if the condition is not meet
       //Therefore, the returned array can be something like this: [null, null, "instance of FoodData"]
-      if (userData.data["uid"] == uid) {
-        if (userData.data["uid"] != null && doc["food_id"] != null) {
+      if (userData.documentID == uid) {
+        if (doc["food_id"] != null) {
           return await FatSecretService()
               .getFoodNutrition(int.parse(doc["food_id"]));
         } else {
