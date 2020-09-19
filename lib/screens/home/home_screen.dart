@@ -30,7 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      _barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
+      _barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
     } on PlatformException {
       _err = "Failed to get platform version.";
     }
@@ -47,9 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
     int itemID = await _fatSecretService.findIDForBarcode(barcode);
     if (itemID > 0) {
       DatabaseService(uid: userUid).addFood(itemID.toString());
-    } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ManualNutritionDialogue()));
-    }
+    } // else {
+    //   Navigator.push(context,
+    //       MaterialPageRoute(builder: (context) => ManualNutritionDialogue()));
+    // }
   }
 
   @override
@@ -100,7 +102,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <InlineSpan>[
                           TextSpan(
                             text: "What are you \neating ",
-                            style: TextStyle(color: Color(Colors.white.value).withOpacity(.90)),
+                            style: TextStyle(
+                                color:
+                                    Color(Colors.white.value).withOpacity(.90)),
                           ),
                           TextSpan(
                             text: "today?",
