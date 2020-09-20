@@ -1,18 +1,18 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_barcode_scanner/flutter_barcode_scanner.dart";
-import 'package:nutrition/components/home_screen/manual_food_bar.dart';
-import 'package:nutrition/components/manual_nutrition_dialogue.dart';
+import "package:nutrition/screens/home/components/manual_food_bar.dart";
+import 'package:nutrition/screens/home/components/manual_nutrition_dialog.dart';
 import "package:nutrition/services/database.dart";
 import "package:nutrition/services/fatsecret.dart";
 import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
-import 'package:nutrition/components/home_screen/barcode_bar.dart';
+import "package:nutrition/screens/home/components/barcode_bar.dart";
 import "package:nutrition/screens/information_screen.dart";
-import "package:nutrition/screens/loading_screen.dart";
-import 'package:nutrition/components/home_screen/food_list_card.dart';
-import 'package:nutrition/components/home_screen/daily_goal_card.dart';
-import 'package:nutrition/components/home_screen/search_bar.dart';
+import "package:nutrition/components/loading.dart";
+import "package:nutrition/screens/home/components/food_list_card.dart";
+import "package:nutrition/screens/home/components/daily_goal_card.dart";
+import "package:nutrition/screens/home/components/search_bar.dart";
 import "package:nutrition/temp/debug_section.dart";
 
 class HomeScreen extends StatefulWidget {
@@ -48,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
     int itemID = await _fatSecretService.findIDForBarcode(barcode);
     if (itemID > 0) {
       DatabaseService(uid: userUid).addFood(itemID.toString());
-    } else {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ManualNutritionDialogue()));
-    }
+    } // else {
+    //   Navigator.push(context,
+    //       MaterialPageRoute(builder: (context) => ManualNutritionDialogue()));
+    // }
   }
 
   @override
@@ -128,10 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: TextSpan(
                             style: Theme.of(context).textTheme.headline4,
                             children: <InlineSpan>[
-                              TextSpan(text: "Live "),
+                              TextSpan(
+                                text: "Live ",
+                                style: TextStyle(color: Colors.black87),
+                              ),
                               TextSpan(
                                 text: "Healthy",
                                 style: TextStyle(
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                 ),
                               )
@@ -248,10 +252,14 @@ class _HomeScreenState extends State<HomeScreen> {
             text: TextSpan(
               style: Theme.of(context).textTheme.headline4,
               children: <InlineSpan>[
-                TextSpan(text: "Daily "),
+                TextSpan(
+                  text: "Daily ",
+                  style: TextStyle(color: Colors.black87),
+                ),
                 TextSpan(
                   text: "Goals",
                   style: TextStyle(
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 )

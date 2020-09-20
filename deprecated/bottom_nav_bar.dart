@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
-import "package:nutrition/screens/home_screen.dart";
-import "package:nutrition/screens/login_screen.dart";
-import "package:nutrition/screens/register_screen.dart";
+import 'package:nutrition/screens/home/home_screen.dart';
+import 'package:nutrition/screens/login/login_screen.dart';
+import 'package:nutrition/screens/login/register/register_screen.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
