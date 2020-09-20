@@ -113,43 +113,42 @@ class DatabaseService {
   }
 
   // ignore: unused_element
-  Future<List<FoodData>> _foodDataListFromUserCollectionSnapshot(
-      QuerySnapshot snapshot) async {
-    dynamic futures = snapshot.documents.map((doc) async {
-      print("Data:" + doc.data["foods"]);
-      List<DocumentReference> foods = doc.data["foods"];
-      print(foods);
+  // Future<List<FoodData>> _foodDataListFromUserCollectionSnapshot(
+  //     QuerySnapshot snapshot) async {
+  //   List<FoodData> completedFoodList = [];
 
-      foods.map((DocumentReference food) async {
-        DocumentSnapshot foodDocument = await food.get();
-        Map foodMap = foodDocument.data;
-        if (foodMap["food_id"] == null) {
-          return FoodData(
-            foodName: doc["food"]["foodName"] ?? "",
-            brandName: doc["food"]["brandName"] ?? "",
-            serving: Serving(
-              calories: doc["food"]["serving"]["calories"] ?? "0",
-              carbohydrate: doc["food"]["serving"]["carbohydrate"] ?? "0",
-              fat: doc["food"]["serving"]["fat"] ?? "0",
-              protein: doc["food"]["serving"]["protein"] ?? "0",
-              servingAmount: doc["food"]["serving"]["servingAmount"] ?? "0",
-              servingDescription:
-                  doc["food"]["serving"]["servingDescription"] ?? "",
-              servingUnit: doc["food"]["serving"]["servingUnit"] ?? "g",
-            ),
-          );
-        } else {
-          return await FatSecretService().getFoodNutrition(foodMap["food_id"]);
-        }
-      });
+  //   snapshot.documents.forEach((doc) async {
+  //     List<dynamic> foods = doc.data["foods"];
 
-      return null;
-    });
+  //     foods.forEach((food) async {
+  //       DocumentSnapshot actualFood = await food.get();
+  //       print(actualFood.data["food"]);
+  //       if (actualFood.data["food_id"] == null) {
+  //         completedFoodList.add(FoodData(
+  //           foodName: actualFood.data["food"]["foodName"],
+  //           brandName: actualFood.data["food"]["brandName"],
+  //           serving: Serving(
+  //             calories: actualFood.data["food"]["serving"]["calories"],
+  //             carbohydrate: actualFood.data["food"]["serving"]["carbohydrate"],
+  //             fat: actualFood.data["food"]["serving"]["fat"],
+  //             protein: actualFood.data["food"]["serving"]["protein"],
+  //             servingAmount: actualFood.data["food"]["serving"]
+  //                 ["servingAmount"],
+  //             servingDescription: actualFood.data["food"]["serving"]
+  //                 ["servingDescription"],
+  //             servingUnit: actualFood.data["food"]["serving"]["servingUnit"],
+  //           ),
+  //         ));
+  //       } else {
+  //         completedFoodList.add(await FatSecretService()
+  //             .getFoodNutrition(int.parse(actualFood.data["food_id"])));
+  //       }
+  //     });
+  //   });
 
-    print("Ran");
-    print(await Future.wait(futures));
-    return await Future.wait(futures);
-  }
+  //   // print(await Future.wait(futures));
+  //   return completedFoodList;
+  // }
 
   Future<List<Food>> _foodListFromFoodCollectionSnapshot(
       QuerySnapshot snapshot) async {
@@ -177,5 +176,8 @@ class DatabaseService {
     return foodsCollection
         .snapshots()
         .asyncMap(_foodDataListFromFoodCollectionSnapshot);
+    // return usersCollection
+    //     .snapshots()
+    //     .asyncMap(_foodDataListFromUserCollectionSnapshot);
   }
 }
