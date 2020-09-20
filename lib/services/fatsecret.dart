@@ -66,7 +66,7 @@ class FatSecretService {
 
         Serving itemServing;
 
-        // print(response);
+        print("My lovely response from API: ${response ?? "no good"}");
 
         try {
           dynamic mapServing = response["servings"]["serving"];
@@ -109,7 +109,7 @@ class FatSecretService {
             numberOfUnits: "",
             servingDescription: "",
           );
-          print(err);
+          // print(err);
           print("Serving failed to retrieve! Using backup values instead.");
         }
 
@@ -117,16 +117,20 @@ class FatSecretService {
 
         try {
           foodItem = FoodData(
-            brandName: response["brand_name"] ?? "",
-            foodName: response["food_name"] ?? "",
-            foodUrl: response["food_url"] ?? "",
+            brandName: response["brand_name"],
+            foodName: response["food_name"],
+            foodUrl: response["food_url"],
             serving: itemServing,
           );
         } catch (err) {
-          print(err);
+          // print(err);
           print(
               "Something wrong with food names. Using backup values instead.");
-          foodItem = FoodData();
+          foodItem = FoodData(
+            brandName: "No Good",
+            foodName: "No Good",
+            serving: itemServing,
+          );
         }
 
         return foodItem;

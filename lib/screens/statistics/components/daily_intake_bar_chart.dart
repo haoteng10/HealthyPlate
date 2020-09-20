@@ -33,7 +33,11 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
     double _protein = 0;
 
     filteredFoods.forEach((FoodData food) {
-      if (food != null) {
+      print("My favorite calories: " + food.serving.calories ?? "Hello?");
+      if (food.serving.calories != null &&
+          food.serving.carbohydrate != null &&
+          food.serving.fat != null &&
+          food.serving.protein != null) {
         _calories = _calories + double.parse(food.serving.calories);
         _carbohydrate = _carbohydrate + double.parse(food.serving.carbohydrate);
         _fat = _fat + double.parse(food.serving.fat);
