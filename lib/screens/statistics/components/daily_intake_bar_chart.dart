@@ -33,10 +33,12 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
     double _protein = 0;
 
     filteredFoods.forEach((FoodData food) {
-      _calories = _calories + double.parse(food.serving.calories);
-      _carbohydrate = _carbohydrate + double.parse(food.serving.carbohydrate);
-      _fat = _fat + double.parse(food.serving.fat);
-      _protein = _protein + double.parse(food.serving.protein);
+      if (food != null) {
+        _calories = _calories + double.parse(food.serving.calories);
+        _carbohydrate = _carbohydrate + double.parse(food.serving.carbohydrate);
+        _fat = _fat + double.parse(food.serving.fat);
+        _protein = _protein + double.parse(food.serving.protein);
+      }
     });
 
     return {

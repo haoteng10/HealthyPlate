@@ -2,6 +2,8 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import 'package:nutrition/models/api/serving.dart';
 import "package:nutrition/models/food.dart";
 import "package:nutrition/services/fatsecret.dart";
+import "dart:async";
+import "dart:core";
 
 class DatabaseService {
   final String uid;
@@ -110,15 +112,49 @@ class DatabaseService {
     return await Future.wait(futures);
   }
 
+  // ignore: unused_element
+  Future<List<FoodData>> _foodDataListFromUserCollectionSnapshot(
+      QuerySnapshot snapshot) async {
+    dynamic futures = snapshot.documents.map((doc) async {
+      print("Data:" + doc.data["foods"]);
+      List<DocumentReference> foods = doc.data["foods"];
+      print(foods);
+
+      foods.map((DocumentReference food) async {
+        DocumentSnapshot foodDocument = await food.get();
+        Map foodMap = foodDocument.data;
+        if (foodMap["food_id"] == null) {
+          return FoodData(
+            foodName: doc["food"]["foodName"] ?? "",
+            brandName: doc["food"]["brandName"] ?? "",
+            serving: Serving(
+              calories: doc["food"]["serving"]["calories"] ?? "0",
+              carbohydrate: doc["food"]["serving"]["carbohydrate"] ?? "0",
+              fat: doc["food"]["serving"]["fat"] ?? "0",
+              protein: doc["food"]["serving"]["protein"] ?? "0",
+              servingAmount: doc["food"]["serving"]["servingAmount"] ?? "0",
+              servingDescription:
+                  doc["food"]["serving"]["servingDescription"] ?? "",
+              servingUnit: doc["food"]["serving"]["servingUnit"] ?? "g",
+            ),
+          );
+        } else {
+          return await FatSecretService().getFoodNutrition(foodMap["food_id"]);
+        }
+      });
+
+      return null;
+    });
+
+    print("Ran");
+    print(await Future.wait(futures));
+    return await Future.wait(futures);
+  }
+
   Future<List<Food>> _foodListFromFoodCollectionSnapshot(
       QuerySnapshot snapshot) async {
     dynamic futures = snapshot.documents.map((doc) async {
-      //Get the user information from the food"s user reference
       DocumentSnapshot userData = await doc.data["user"].get();
-      //If the user's uid in the food document is equal to the user"s uid of the application
-      //Return the food document to the StreamBuilder in an array of items
-      //Returns null if the condition is not meet
-      //Therefore, the returned array can be something like this: [null, null, "instance of FoodData"]
       if (userData.data["uid"] == uid) {
         return Food(
           foodID: doc.data["food_id"],

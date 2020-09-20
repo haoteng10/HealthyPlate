@@ -50,14 +50,14 @@ class FatSecretService {
   }
 
   //Use the item id to get nutritional values
-  Future<FoodData> getFoodNutrition(int itemID) async {
+  Future<FoodData> getFoodNutrition(int foodID) async {
     await checkAndRefreshToken();
 
-    if (itemID > 0) {
+    if (foodID > 0) {
       http.Response jsonResponse = await _oauthClient
           .post("https://platform.fatsecret.com/rest/server.api", body: {
         "method": "food.get.v2",
-        "food_id": itemID.toString(),
+        "food_id": foodID.toString(),
         "format": "json",
       });
 
