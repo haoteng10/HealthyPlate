@@ -19,11 +19,14 @@ class FoodData {
 
   final DocumentReference user;
 
+  final String dateTime;
+
   FoodData({
     this.brandName,
     this.foodName,
     this.foodUrl,
     this.serving,
     this.user,
+    this.dateTime,
   });
 }

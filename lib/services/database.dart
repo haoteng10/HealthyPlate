@@ -90,11 +90,12 @@ class DatabaseService {
       if (userData.documentID == uid) {
         if (doc["food_id"] != null) {
           return await FatSecretService()
-              .getFoodNutrition(int.parse(doc["food_id"]));
+              .getFoodNutrition(int.parse(doc["food_id"]), doc["dateTime"]);
         } else {
           return FoodData(
             foodName: doc["food"]["foodName"],
             brandName: doc["food"]["brandName"],
+            dateTime: doc["dateTime"],
             serving: Serving(
               calories: doc["food"]["serving"]["calories"],
               carbohydrate: doc["food"]["serving"]["carbohydrate"],

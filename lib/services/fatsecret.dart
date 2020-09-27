@@ -50,7 +50,7 @@ class FatSecretService {
   }
 
   //Use the item id to get nutritional values
-  Future<FoodData> getFoodNutrition(int foodID) async {
+  Future<FoodData> getFoodNutrition(int foodID, String dateTime) async {
     await checkAndRefreshToken();
 
     if (foodID > 0) {
@@ -66,13 +66,15 @@ class FatSecretService {
 
         Serving itemServing;
 
-        print("My lovely response from API: ${response ?? "no good"}");
+        if (response == null) {
+          print("Response is null!");
+          return null;
+        }
 
         try {
           dynamic mapServing = response["servings"]["serving"];
 
           if (mapServing is List) {
-            // multipleServings = true;
             itemServing = Serving(
               calories: mapServing[0]["calories"],
               carbohydrate: mapServing[0]["carbohydrate"],
@@ -109,7 +111,6 @@ class FatSecretService {
             numberOfUnits: "",
             servingDescription: "",
           );
-          // print(err);
           print("Serving failed to retrieve! Using backup values instead.");
         }
 
@@ -120,12 +121,12 @@ class FatSecretService {
             brandName: response["brand_name"],
             foodName: response["food_name"],
             foodUrl: response["food_url"],
+            dateTime: dateTime,
             serving: itemServing,
           );
         } catch (err) {
-          // print(err);
           print(
-              "Something wrong with food names. Using backup values instead.");
+              "Something wrong with food names! Using backup values instead.");
           foodItem = FoodData(
             brandName: "No Good",
             foodName: "No Good",
@@ -135,10 +136,9 @@ class FatSecretService {
 
         return foodItem;
       }
-    } else {
-      print("===== Product not found! =====");
     }
 
+    print("===== Product not found! =====");
     return null;
   }
 }
