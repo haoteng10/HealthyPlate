@@ -110,14 +110,6 @@ class _DebugState extends State<Debug> {
                                 builder: (context) => FirestoreDebug()));
                       },
                       child: Text("Firestore")),
-                  SizedBox(width: 10.0),
-                  OutlineButton.icon(
-                    onPressed: () async {
-                      await _auth.signOut();
-                    },
-                    icon: Icon(Icons.person),
-                    label: Text("Sign Out"),
-                  )
                 ],
               )
             ],

@@ -6,6 +6,10 @@ import "package:nutrition/models/user.dart";
 import "package:provider/provider.dart";
 
 class WeeklyCaloriesBarChart extends StatefulWidget {
+  List<FoodData> filteredFoods;
+
+  WeeklyCaloriesBarChart({this.filteredFoods});
+
   @override
   State<StatefulWidget> createState() => WeeklyCaloriesBarChartState();
 }
@@ -36,74 +40,59 @@ class WeeklyCaloriesBarChartState extends State<WeeklyCaloriesBarChart> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    List<int> _weeklyCalories = populateWeeklyCalories(widget.filteredFoods);
 
-    return StreamBuilder<List<FoodData>>(
-      stream: DatabaseService(uid: user.uid).foodData,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          List<FoodData> filteredFoods = snapshot.data
-              .where((FoodData food) => food == null ? false : true)
-              .toList();
-          List<int> _weeklyCalories = populateWeeklyCalories(filteredFoods);
-          return AspectRatio(
-            aspectRatio: 1,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18)),
-              color: Colors.blueAccent[400],
-              child: Stack(
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        color: Colors.blueAccent[400],
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Text(
-                          "Weekly Calories",
-                          style: TextStyle(
-                              color: const Color(0xff0f4a3c),
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "A weekly view of your calories consumption",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 38,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: BarChart(
-                              mainBarData(_weeklyCalories),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                      ],
+                  Text(
+                    "Weekly Calories",
+                    style: TextStyle(
+                        color: const Color(0xff0f4a3c),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    "A weekly view of your calories consumption",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 38,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: BarChart(
+                        mainBarData(_weeklyCalories),
+                      ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 12,
                   ),
                 ],
               ),
             ),
-          );
-        } else {
-          return Container();
-        }
-      },
+          ],
+        ),
+      ),
     );
   }
 

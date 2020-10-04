@@ -1,10 +1,6 @@
 import "package:fl_chart/fl_chart.dart";
 import "package:flutter/material.dart";
-// import "package:nutrition/components/loading.dart";
 import "package:nutrition/models/food.dart";
-import "package:nutrition/services/database.dart";
-import "package:provider/provider.dart";
-import "package:nutrition/models/user.dart";
 
 class DailyIntakeBarChart extends StatefulWidget {
   final List<Color> availableColors = [
@@ -15,6 +11,10 @@ class DailyIntakeBarChart extends StatefulWidget {
     Colors.pink,
     Colors.redAccent,
   ];
+
+  List<FoodData> filteredFoods;
+
+  DailyIntakeBarChart({this.filteredFoods});
 
   @override
   State<StatefulWidget> createState() => DailyIntakeBarChartState();
@@ -33,7 +33,6 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
     double _protein = 0;
 
     filteredFoods.forEach((FoodData food) {
-      // print("My favorite calories: " + food.serving.calories ?? "Hello?");
       if (food.serving.calories != null &&
           food.serving.carbohydrate != null &&
           food.serving.fat != null &&
@@ -55,74 +54,59 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    Map _dailyIntake = calculateIntake(widget.filteredFoods);
 
-    return StreamBuilder<List<FoodData>>(
-      stream: DatabaseService(uid: user.uid).foodData,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          List<FoodData> filteredFoods = snapshot.data
-              .where((FoodData food) => food == null ? false : true)
-              .toList();
-          Map _dailyIntake = calculateIntake(filteredFoods);
-          return AspectRatio(
-            aspectRatio: 1,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18)),
-              color: const Color(0xff81e5cd),
-              child: Stack(
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        color: const Color(0xff81e5cd),
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Text(
-                          "Daily (Total) Intakes",
-                          style: TextStyle(
-                              color: const Color(0xff0f4a3c),
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "A daily overview of your consumption",
-                          style: TextStyle(
-                              color: const Color(0xff379982),
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 38,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: BarChart(
-                              mainBarData(_dailyIntake),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                      ],
+                  Text(
+                    "Daily (Total) Intakes",
+                    style: TextStyle(
+                        color: const Color(0xff0f4a3c),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    "A daily overview of your consumption",
+                    style: TextStyle(
+                        color: const Color(0xff379982),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 38,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: BarChart(
+                        mainBarData(_dailyIntake),
+                      ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 12,
                   ),
                 ],
               ),
             ),
-          );
-        } else {
-          return Container();
-        }
-      },
+          ],
+        ),
+      ),
     );
   }
 
