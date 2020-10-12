@@ -63,7 +63,7 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
                                   ),
                                   onPressed: () async {
                                     //Do something
-                                    await DatabaseService()
+                                    await DatabaseService(uid: user.uid)
                                         .deleteFoodDocument(food.documentID);
                                   },
                                 ),

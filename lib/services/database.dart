@@ -79,7 +79,14 @@ class DatabaseService {
   }
 
   Future<void> deleteFoodDocument(String documentID) async {
-    await foodsCollection.document(documentID).delete();
+    DocumentReference foodDoc = foodsCollection.document(documentID);
+    print(foodDoc);
+
+    await usersCollection.document(uid).updateData({
+      "foods": FieldValue.arrayRemove([foodDoc]),
+    });
+
+    await foodDoc.delete();
   }
 
   Future<List<FoodData>> _foodDataListFromFoodCollectionSnapshot(

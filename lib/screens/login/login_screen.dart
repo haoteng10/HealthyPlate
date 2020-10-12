@@ -129,7 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 30),
                                 child: Text(
                                   "Invalid email",
                                   style: TextStyle(
@@ -158,7 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 30),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 30),
                                 child: Text(
                                   "Invalid password",
                                   style: TextStyle(
@@ -198,7 +200,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: double.infinity,
                             height: 56,
                             child: FlatButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               color: kPrimaryColor,
                               onPressed: () async {
                                 await authenticate();
@@ -228,7 +231,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: double.infinity,
                             height: 56,
                             child: FlatButton(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               color: Color(0xFFffc9b5),
                               onPressed: () async {
                                 await anonAuthenticate();

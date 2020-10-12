@@ -168,8 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   buildGoalList(context),
                   SizedBox(height: 15),
                   //Debug Section
-                  Debug(),
-                  SizedBox(height: 30),
+                  // Debug(),
+                  // SizedBox(height: 30),
                 ],
               ),
             ),
