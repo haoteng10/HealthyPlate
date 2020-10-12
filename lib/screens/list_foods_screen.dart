@@ -5,12 +5,12 @@ import "package:nutrition/services/database.dart";
 import "package:nutrition/models/user.dart";
 import "package:provider/provider.dart";
 
-class FirestoreDebug extends StatefulWidget {
+class ListFoodsScreen extends StatefulWidget {
   @override
-  _FirestoreDebugState createState() => _FirestoreDebugState();
+  _ListFoodsScreenState createState() => _ListFoodsScreenState();
 }
 
-class _FirestoreDebugState extends State<FirestoreDebug> {
+class _ListFoodsScreenState extends State<ListFoodsScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -61,8 +61,10 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
                                     size: 20.0,
                                     color: Colors.brown[900],
                                   ),
-                                  onPressed: () {
-                                    //   _onDeleteItemPressed(index);
+                                  onPressed: () async {
+                                    //Do something
+                                    await DatabaseService()
+                                        .deleteFoodDocument(food.documentID);
                                   },
                                 ),
                               ],
@@ -82,15 +84,6 @@ class _FirestoreDebugState extends State<FirestoreDebug> {
           }
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     showModalBottomSheet(
-      //         context: context, builder: (context) => AddItemBottomSheet());
-      //     // DatabaseService(uid: user.uid).addFood("apple", 50);
-      //   },
-      //   child: Icon(Icons.add),
-      //   backgroundColor: Colors.pink,
-      // ),
     );
   }
 }

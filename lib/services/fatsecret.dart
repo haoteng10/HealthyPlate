@@ -50,7 +50,8 @@ class FatSecretService {
   }
 
   //Use the item id to get nutritional values
-  Future<FoodData> getFoodNutrition(int foodID, String dateTime) async {
+  Future<FoodData> getFoodNutrition(
+      int foodID, String dateTime, String documentID) async {
     await checkAndRefreshToken();
 
     if (foodID > 0) {
@@ -123,6 +124,7 @@ class FatSecretService {
             foodUrl: response["food_url"],
             dateTime: dateTime,
             serving: itemServing,
+            documentID: documentID,
           );
         } catch (err) {
           print(

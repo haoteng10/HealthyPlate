@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:nutrition/temp/firestore_screen.dart";
+import 'package:nutrition/screens/list_foods_screen.dart';
 import "package:nutrition/services/auth.dart";
 import "package:nutrition/temp/temp_login.dart";
 import "package:nutrition/temp/temp_register.dart";
@@ -100,18 +100,6 @@ class _DebugState extends State<Debug> {
                 ),
               ),
               SizedBox(height: 10.0),
-              Row(
-                children: [
-                  OutlineButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => FirestoreDebug()));
-                      },
-                      child: Text("Firestore")),
-                ],
-              )
             ],
           ),
         ),

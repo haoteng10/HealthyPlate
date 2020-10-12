@@ -78,6 +78,10 @@ class DatabaseService {
     });
   }
 
+  Future<void> deleteFoodDocument(String documentID) async {
+    await foodsCollection.document(documentID).delete();
+  }
+
   Future<List<FoodData>> _foodDataListFromFoodCollectionSnapshot(
       QuerySnapshot snapshot) async {
     dynamic futures = snapshot.documents.map((doc) async {
@@ -89,13 +93,14 @@ class DatabaseService {
       //Therefore, the returned array can be something like this: [null, null, "instance of FoodData"]
       if (userData.documentID == uid) {
         if (doc["food_id"] != null) {
-          return await FatSecretService()
-              .getFoodNutrition(int.parse(doc["food_id"]), doc["dateTime"]);
+          return await FatSecretService().getFoodNutrition(
+              int.parse(doc["food_id"]), doc["dateTime"], doc.documentID);
         } else {
           return FoodData(
             foodName: doc["food"]["foodName"],
             brandName: doc["food"]["brandName"],
             dateTime: doc["dateTime"],
+            documentID: doc.documentID,
             serving: Serving(
               calories: doc["food"]["serving"]["calories"],
               carbohydrate: doc["food"]["serving"]["carbohydrate"],

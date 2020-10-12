@@ -21,6 +21,8 @@ class FoodData {
 
   final String dateTime;
 
+  final String documentID;
+
   FoodData({
     this.brandName,
     this.foodName,
@@ -28,5 +30,6 @@ class FoodData {
     this.serving,
     this.user,
     this.dateTime,
+    this.documentID,
   });
 }
