@@ -16,6 +16,7 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
     final user = Provider.of<User>(context);
 
     return Scaffold(
+      backgroundColor: Colors.grey[800],
       appBar: AppBar(
         title: Text("Recorded Foods"),
         centerTitle: true,
@@ -31,7 +32,7 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
                 if (food != null) {
                   return Card(
                     elevation: 5,
-                    color: Colors.lightBlue[300],
+                    color: Color.fromRGBO(13, 91, 242, 1),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
@@ -39,9 +40,17 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
                         children: <Widget>[
                           ListTile(
                             title: Text(
-                                "${(food.brandName ?? "") + " " + (food.foodName ?? "")}"),
-                            subtitle:
-                                Text("Calories: ${food.serving.calories}"),
+                              "${(food.brandName ?? "") + " " + (food.foodName ?? "")}",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            subtitle: Text(
+                              "Calories: ${food.serving.calories}",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -49,17 +58,23 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
                                   icon: Icon(
                                     Icons.more_horiz,
                                     size: 20.0,
-                                    color: Colors.brown[900],
+                                    color: Colors.white,
                                   ),
                                   onPressed: () {
-                                    //   _onDeleteItemPressed(index);
+                                    showModalBottomSheet<void>(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return ListFoodBottomSheet(
+                                            inputFood: food,
+                                          );
+                                        });
                                   },
                                 ),
                                 IconButton(
                                   icon: Icon(
                                     Icons.delete_outline,
                                     size: 20.0,
-                                    color: Colors.brown[900],
+                                    color: Colors.white,
                                   ),
                                   onPressed: () async {
                                     //Do something
@@ -84,6 +99,163 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
           }
         },
       ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class ListFoodBottomSheet extends StatelessWidget {
+  FoodData inputFood;
+  ListFoodBottomSheet({this.inputFood});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                flex: 3,
+                child: Text(
+                  "${(inputFood.brandName ?? "") + " " + (inputFood.foodName ?? "")}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                    fontSize: 24.0,
+                  ),
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Calories ",
+                      style: TextStyle(
+                        color: Color.fromRGBO(242, 164, 13, 1),
+                        fontSize: 38.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      inputFood.serving.calories,
+                      style: TextStyle(
+                        color: Color.fromRGBO(31, 224, 44, 1),
+                        fontSize: 38.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Carbohydrate",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      inputFood.serving.carbohydrate + " g",
+                      style: TextStyle(
+                        color: Color.fromRGBO(31, 224, 44, 1),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Fat",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      inputFood.serving.fat + " g",
+                      style: TextStyle(
+                        color: Color.fromRGBO(31, 224, 44, 1),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Protein",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      inputFood.serving.protein + " g",
+                      style: TextStyle(
+                        color: Color.fromRGBO(31, 224, 44, 1),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Serving Size",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      inputFood.serving.servingAmount + " g" ?? "",
+                      style: TextStyle(
+                        color: Color.fromRGBO(31, 224, 44, 1),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Serving Description",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    ),
+                    Text(
+                      inputFood.serving.servingDescription ?? "",
+                      style: TextStyle(
+                        color: Color.fromRGBO(31, 224, 44, 1),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
