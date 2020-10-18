@@ -46,13 +46,13 @@ class DailyGoalCard extends StatelessWidget {
             ),
           ),
           Spacer(),
-          IconButton(
-            icon: Icon(
-              Icons.arrow_forward_ios,
-              size: 18,
-            ),
-            onPressed: () {},
-          )
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.arrow_forward_ios,
+          //     size: 18,
+          //   ),
+          //   onPressed: () {},
+          // ),
         ],
       ),
     );

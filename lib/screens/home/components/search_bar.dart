@@ -40,7 +40,7 @@ class _SearchBarState extends State<SearchBar> {
                 hintText: "Search for recipes",
                 hintStyle: TextStyle(
                   fontSize: 16,
-                  color: kSecondaryColor,
+                  color: Colors.grey[300],
                   fontWeight: FontWeight.bold,
                 ),
               ),

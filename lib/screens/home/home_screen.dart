@@ -9,7 +9,6 @@ import "package:provider/provider.dart";
 import "package:nutrition/models/user.dart";
 import "package:nutrition/screens/home/components/barcode_bar.dart";
 import "package:nutrition/screens/information_screen.dart";
-import "package:nutrition/components/loading.dart";
 import "package:nutrition/screens/home/components/food_list_card.dart";
 import "package:nutrition/screens/home/components/daily_goal_card.dart";
 import "package:nutrition/screens/home/components/search_bar.dart";
