@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-// import 'package:nutrition/deprecated/bottom_nav_bar.dart';
 import "../constants.dart";
 
 class InformationScreen extends StatefulWidget {
@@ -10,8 +9,13 @@ class InformationScreen extends StatefulWidget {
 class _InformationScreenState extends State<InformationScreen> {
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> arguments = ModalRoute.of(context).settings.arguments;
+    final Map<String, String> arguments =
+        ModalRoute.of(context).settings.arguments;
     final String image = arguments["image"];
+    final String lineOne = arguments["lineOne"];
+    final String lineTwo = arguments["lineTwo"];
+    final String lineThree = arguments["lineThree"];
+    final String description = arguments["longDescription"];
 
     return Scaffold(
       // appBar: appBar(context, "Nutritional", "Information"),
@@ -24,7 +28,12 @@ class _InformationScreenState extends State<InformationScreen> {
             imgSrc: image,
           ),
           Expanded(
-            child: ItemInfo(),
+            child: ItemInfo(
+              lineOne: lineOne,
+              lineTwo: lineTwo,
+              lineThree: lineThree,
+              description: description,
+            ),
           ),
           // Put this in the same container as desc
         ],
@@ -53,7 +62,16 @@ class ItemImage extends StatelessWidget {
 }
 
 class ItemInfo extends StatelessWidget {
+  final String lineOne;
+  final String lineTwo;
+  final String lineThree;
+  final String description;
+
   const ItemInfo({
+    this.lineOne,
+    this.lineTwo,
+    this.lineThree,
+    this.description,
     Key key,
   }) : super(key: key);
 
@@ -83,22 +101,22 @@ class ItemInfo extends StatelessWidget {
         children: <Widget>[
           SizedBox(height: 5),
           metaData(
-            name: "Trader Joe's Chelesa",
+            name: this.lineOne ?? "",
             icon: Icons.location_on,
           ),
           SizedBox(height: 10),
           metaData(
-            name: "17 Calories, 0.17g Fat",
+            name: this.lineTwo ?? "",
             icon: Icons.check_circle_outline,
           ),
           SizedBox(height: 10),
           metaData(
-            name: "9.56g Carbs, 0.64g Protein",
+            name: this.lineThree ?? "",
             icon: Icons.check_circle_outline,
           ),
           SizedBox(height: 20),
           Text(
-            "The lemon, Citrus limon, is a species of small evergreen tree in the flowering plant family Rutaceae, native to South Asia, primarily North eastern India. The tree's ellipsoidal yellow fruit is used for culinary and non-culinary purposes throughout the world, primarily for its juice, which has both culinary and cleaning uses.",
+            this.description ?? "",
             style: TextStyle(height: 1.5, fontSize: 16),
           ),
           SizedBox(height: 30),

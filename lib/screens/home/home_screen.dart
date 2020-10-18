@@ -13,7 +13,6 @@ import "package:nutrition/components/loading.dart";
 import "package:nutrition/screens/home/components/food_list_card.dart";
 import "package:nutrition/screens/home/components/daily_goal_card.dart";
 import "package:nutrition/screens/home/components/search_bar.dart";
-import "package:nutrition/temp/debug_section.dart";
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -184,17 +183,8 @@ class _HomeScreenState extends State<HomeScreen> {
           FoodListCard(
             image: "assets/images/lemon.jpg",
             title: "Lemons",
-            subtitle: "Short desc",
-            pressCalories: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return LoadingScreen();
-                  },
-                ),
-              );
-            },
+            subtitle: "Sour and Juicy",
+            pressCalories: () {},
             pressInfo: () {
               Navigator.push(
                 context,
@@ -206,6 +196,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     arguments: {
                       // Prefix this with the food name
                       "image": "assets/images/lemon.jpg",
+                      "lineOne": "Trader Joe's Chelesa",
+                      "lineTwo": "17 Calories, 0.17g Fat",
+                      "lineThree": "9.56g Carbs, 0.64g Protein",
+                      "longDescription":
+                          "The lemon, also known as Citrus limon, is a species that belongs to a family of citrus fruit, sharing with many characteristics of other species of citrus fruits. Lemon has been used for culinary and non-culinary purposes throughout the world, notably for its juice. [1]",
                     },
                   ),
                 ),
@@ -215,23 +210,56 @@ class _HomeScreenState extends State<HomeScreen> {
           FoodListCard(
             image: "assets/images/strawberry.jpg",
             title: "Strawberries",
-            subtitle: "A fact here!",
+            subtitle: "Sweet and Sour",
             pressCalories: () {},
-            pressInfo: () {},
+            pressInfo: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return InformationScreen();
+                  },
+                  settings: RouteSettings(
+                    arguments: {
+                      // Prefix this with the food name
+                      "image": "assets/images/strawberry.jpg",
+                      "lineOne": "Trader Joe's Chelesa",
+                      "lineTwo": "4 Calories, 0g Fat",
+                      "lineThree": "0.9g Carbs, 0.1g Protein",
+                      "longDescription":
+                          "TStrawberries are bright red in appearance. It can be sweet, sour and juicy at the same time. It is an excellent source of vitamin C and manganese. It is also rich in antioxidants and plant compounds. [2]",
+                    },
+                  ),
+                ),
+              );
+            },
           ),
           FoodListCard(
             image: "assets/images/tomato.jpg",
             title: "Tomatoes",
             subtitle: "For pizza lovers!",
             pressCalories: () {},
-            pressInfo: () {},
-          ),
-          FoodListCard(
-            image: "assets/images/broccoli.jpg",
-            title: "Broccoli",
-            subtitle: "The classic greens.",
-            pressCalories: () {},
-            pressInfo: () {},
+            pressInfo: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return InformationScreen();
+                  },
+                  settings: RouteSettings(
+                    arguments: {
+                      // Prefix this with the food name
+                      "image": "assets/images/tomato.jpg",
+                      "lineOne": "Trader Joe's Chelesa",
+                      "lineTwo": "22 Calories, 0.2g Fat",
+                      "lineThree": "4.8g Carbs, 1.1g Protein",
+                      "longDescription":
+                          "Tomatoes are the fruit from from the nightshade family native to South America. It is a major source of the antioxidant lycopene which can reduce the risk of heart disease and cancer. It also has a great amount of vitamin C, potassium, folate, and vitamin K. [3]",
+                    },
+                  ),
+                ),
+              );
+            },
           ),
           SizedBox(width: 30)
         ],
