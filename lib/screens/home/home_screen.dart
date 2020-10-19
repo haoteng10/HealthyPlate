@@ -11,7 +11,7 @@ import "package:nutrition/screens/home/components/barcode_bar.dart";
 import "package:nutrition/screens/information_screen.dart";
 import "package:nutrition/screens/home/components/food_list_card.dart";
 import "package:nutrition/screens/home/components/daily_goal_card.dart";
-import "package:nutrition/screens/home/components/search_bar.dart";
+// import "package:nutrition/screens/home/components/search_bar.dart";
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(height: 15),
-                        SearchBar(),
+                        // SearchBar(),
                       ],
                     ),
                   ),
@@ -199,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "lineTwo": "17 Calories, 0.17g Fat",
                       "lineThree": "9.56g Carbs, 0.64g Protein",
                       "longDescription":
-                          "The lemon, also known as Citrus limon, is a species that belongs to a family of citrus fruit, sharing with many characteristics of other species of citrus fruits. Lemon has been used for culinary and non-culinary purposes throughout the world, notably for its juice. [1]",
+                          "The lemon, also known as Citrus limon, is a species that belongs to a family of citrus fruit, sharing with many characteristics of other species of citrus fruits. It has been used for culinary and non-culinary purposes throughout the world, notably for its juice. [1]",
                     },
                   ),
                 ),
@@ -226,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       "lineTwo": "4 Calories, 0g Fat",
                       "lineThree": "0.9g Carbs, 0.1g Protein",
                       "longDescription":
-                          "TStrawberries are bright red in appearance. It can be sweet, sour and juicy at the same time. It is an excellent source of vitamin C and manganese. It is also rich in antioxidants and plant compounds. [2]",
+                          "Strawberries are bright red in appearance. It can be sweet, sour and juicy at the same time. It is an excellent source of vitamin C and manganese. It is also rich in antioxidants and plant compounds. [2]",
                     },
                   ),
                 ),
