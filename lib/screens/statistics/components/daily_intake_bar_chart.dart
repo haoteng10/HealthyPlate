@@ -71,7 +71,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   Text(
-                    "Daily (Total) Intakes",
+                    "Overall Intakes",
                     style: TextStyle(
                         color: const Color(0xff0f4a3c),
                         fontSize: 24,
@@ -81,7 +81,7 @@ class DailyIntakeBarChartState extends State<DailyIntakeBarChart> {
                     height: 4,
                   ),
                   Text(
-                    "A daily overview of your consumption",
+                    "An overview of your consumption",
                     style: TextStyle(
                         color: const Color(0xff379982),
                         fontSize: 18,
