@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:nutrition/components/app_bar.dart";
+import 'package:nutrition/components/rounded_button.dart';
 import 'package:nutrition/screens/list_foods_screen.dart';
 import "package:nutrition/services/auth.dart";
 
@@ -12,74 +14,80 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+    Size size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      backgroundColor: Color(0xFFE6F4FF),
+      body: SingleChildScrollView(
         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                "User Profile",
-                style: TextStyle(
-                  fontSize: 48.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w800,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/healthy.jpg"),
+                  alignment: Alignment.topCenter,
+                  fit: BoxFit.fitWidth,
                 ),
               ),
-              SizedBox(height: 16.0),
-              RaisedButton(
-                onPressed: () async {
-                  await _auth.signOut();
-                },
-                textColor: Colors.white,
-                padding: EdgeInsets.all(0.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        Color(0xFF0D47A1),
-                        Color(0xFF1976D2),
-                        Color(0xFF42A5F5),
-                      ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: size.height * .1),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.headline4,
+                        children: <InlineSpan>[
+                          TextSpan(
+                            text: "The greatest wealth \nis ",
+                            style: TextStyle(color: Color(Colors.white.value).withOpacity(.90)),
+                          ),
+                          TextSpan(
+                            text: "health.",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 149, vertical: 30),
-                  child: Text(
-                    "Sign Out",
-                    style: TextStyle(fontSize: 25),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ListFoodsScreen()));
-                },
-                textColor: Colors.white,
-                padding: EdgeInsets.all(0.0),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: <Color>[
-                        Color(0xFF0D47A1),
-                        Color(0xFF1976D2),
-                        Color(0xFF42A5F5),
-                      ],
+                  SizedBox(height: 90),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: RoundedButton(
+                      press: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ListFoodsScreen()));
+                      },
+                      text: "View Your Foods",
+                      verticalPadding: 18,
                     ),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 103, vertical: 30),
-                  child: Text(
-                    "View Your Foods",
-                    style: TextStyle(fontSize: 25),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    child: RoundedButton(
+                      press: () async {
+                        await _auth.signOut();
+                      },
+                      text: "Sign Out",
+                      verticalPadding: 18,
+                    ),
                   ),
-                ),
+                  Center(
+                    child: Image.asset(
+                      "assets/images/welcome.png",
+                      height: size.height * 0.35,
+                    ),
+                  )
+                ],
               ),
-            ]),
+            ),
+          ],
+        ),
       ),
     );
   }

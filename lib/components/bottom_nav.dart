@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import "package:nutrition/screens/login/login_screen.dart";
-import "package:nutrition/screens/login/register/register_screen.dart";
+import "package:nutrition/screens/register/register_screen.dart";
 import "package:nutrition/screens/statistics/statistics_screen.dart";
 import "package:nutrition/screens/user_profile_screen.dart";
 import "package:provider/provider.dart";

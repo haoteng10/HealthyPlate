@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:nutrition/components/app_bar.dart";
 import "package:nutrition/screens/login/components/form_input.dart";
-import "package:nutrition/screens/login/register/register_screen.dart";
+import "package:nutrition/screens/register/register_screen.dart";
 import "package:nutrition/services/auth.dart";
 import "package:nutrition/components/loading.dart";
 import "../../constants.dart";
@@ -74,16 +74,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     if (_loading) {
       return LoadingScreen();
     } else {
       return Scaffold(
         /* Error thrown if this is the first page they visit */
-        appBar: appBar(context, "Sign In"),
+        appBar: appBar(context, ""),
         body: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             width: double.infinity,
             child: Form(
@@ -92,13 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: size.height * 0.04),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     child: Column(
                       children: <Widget>[
                         Text(
-                          "Welcome back",
+                          "Welcome Back",
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 40,
@@ -129,8 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30),
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
                                 child: Text(
                                   "Invalid email",
                                   style: TextStyle(
@@ -159,8 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 30),
+                                padding: const EdgeInsets.symmetric(horizontal: 30),
                                 child: Text(
                                   "Invalid password",
                                   style: TextStyle(
@@ -200,8 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: double.infinity,
                             height: 56,
                             child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                               color: kPrimaryColor,
                               onPressed: () async {
                                 await authenticate();
@@ -231,17 +224,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: double.infinity,
                             height: 56,
                             child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              color: Color(0xFFffc9b5),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                              color: Color(0xFF45b6fe),
                               onPressed: () async {
                                 await anonAuthenticate();
                               },
                               child: Text(
-                                "GUEST",
+                                "CONTINUE AS GUEST",
                                 style: TextStyle(
                                   fontSize: 18,
-                                  color: Colors.black87,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),

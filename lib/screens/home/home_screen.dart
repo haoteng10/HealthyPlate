@@ -28,8 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      _barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      _barcodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
     } on PlatformException {
       _err = "Failed to get platform version.";
     }
@@ -100,9 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: <InlineSpan>[
                           TextSpan(
                             text: "What are you \neating ",
-                            style: TextStyle(
-                                color:
-                                    Color(Colors.white.value).withOpacity(.90)),
+                            style: TextStyle(color: Color(Colors.white.value).withOpacity(.90)),
                           ),
                           TextSpan(
                             text: "today?",
@@ -158,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: GestureDetector(
                       onTap: () => _showMyDialog(),
-                      child: ManualFoodBar(cardContent: "Record your food"),
+                      child: ManualFoodBar(cardContent: "Add a food item"),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -299,7 +296,6 @@ class _HomeScreenState extends State<HomeScreen> {
             title: "Eat Fruit",
             timeLeft: "6min",
           ),
-          SizedBox(height: 0)
         ],
       ),
     );

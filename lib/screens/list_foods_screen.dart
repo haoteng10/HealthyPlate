@@ -14,9 +14,10 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.grey[600],
       appBar: AppBar(
         title: Text("Recorded Foods"),
         centerTitle: true,
@@ -26,74 +27,84 @@ class _ListFoodsScreenState extends State<ListFoodsScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<FoodData> foods = snapshot.data;
-            return ListView(
-              children: foods.map((FoodData food) {
-                // If the snapshot array is NOT null, return the card. If it is null, then return an empty container.
-                if (food != null) {
-                  return Card(
-                    elevation: 5,
-                    color: Color.fromRGBO(13, 91, 242, 1),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              "${(food.brandName ?? "") + " " + (food.foodName ?? "")}",
-                              style: TextStyle(
-                                color: Colors.white,
+
+            if (foods.every((element) => element == null)) {
+              return Container(
+                child: Center(
+                  child: Image.asset(
+                    "assets/images/nodata.png",
+                    height: size.height * 0.35,
+                  ),
+                ),
+              );
+            } else {
+              return ListView(
+                children: foods.map((FoodData food) {
+                  if (food != null) {
+                    return Card(
+                      elevation: 5,
+                      color: Color.fromRGBO(13, 91, 242, 1),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(
+                                "${(food.brandName ?? "") + " " + (food.foodName ?? "")}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              subtitle: Text(
+                                "Calories: ${food.serving.calories}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.more_horiz,
+                                      size: 20.0,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return ListFoodBottomSheet(
+                                              inputFood: food,
+                                            );
+                                          });
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.delete_outline,
+                                      size: 20.0,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () async {
+                                      //Do something
+                                      await DatabaseService(uid: user.uid).deleteFoodDocument(food.documentID);
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                            subtitle: Text(
-                              "Calories: ${food.serving.calories}",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.more_horiz,
-                                    size: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    showModalBottomSheet<void>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return ListFoodBottomSheet(
-                                            inputFood: food,
-                                          );
-                                        });
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.delete_outline,
-                                    size: 20.0,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () async {
-                                    //Do something
-                                    await DatabaseService(uid: user.uid)
-                                        .deleteFoodDocument(food.documentID);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              }).toList(),
-            );
+                    );
+                  } else {
+                    return Container();
+                  }
+                }).toList(),
+              );
+            }
           } else {
             return LoadingScreen();
           }

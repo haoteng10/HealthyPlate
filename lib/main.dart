@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: "Plate.",
+                    text: "Plate",
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
             SizedBox(
               width: MediaQuery.of(context).size.width * .6,
               child: RoundedButton(
-                text: "Start tracking",
+                text: "Start Tracking",
                 fontSize: 20,
                 press: () {
                   Navigator.pushReplacement(
